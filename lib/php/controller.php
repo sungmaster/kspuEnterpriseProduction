@@ -3,7 +3,7 @@
 
 declare(strict_types = 1);
 
-class PageController {
+class Controller {
 
 	//put your code here
 	private $viewHelper;
@@ -12,7 +12,7 @@ class PageController {
 	public function handle() {
 		//$this=new Program2_1_PageController();
 		$this->model = new Model();
-		$this->viewHelper = new ViewHelper();
+		$this->viewHelper = new View();
 		//alway set this data
 		$this->viewHelper->assign("persons", $this->model->getAllPersons());
 		if (isset($_SERVER['PATH_INFO'])) {
