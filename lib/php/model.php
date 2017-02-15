@@ -32,4 +32,3 @@ class Model {
 		$this->persons[] = array("name" => $name, "adress" => $adress, "city" => $city);
 	}
 }
-?>
