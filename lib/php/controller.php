@@ -12,7 +12,7 @@ class Controller {
 	public function handle() {
 		//$this=new Program2_1_PageController();
 		$this->model = new Model();
-		$this->viewHelper = new View();
+		$this->viewHelper = new ViewHelper();
 		//alway set this data
 		$this->viewHelper->assign("persons", $this->model->getAllPersons());
 		if (isset($_SERVER['PATH_INFO'])) {
