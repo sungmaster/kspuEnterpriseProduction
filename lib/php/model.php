@@ -1,4 +1,8 @@
 <?php
+if (!isset($kspuEnterprise)){
+	die();
+}
+
 class Model {
 	private $persons;
 

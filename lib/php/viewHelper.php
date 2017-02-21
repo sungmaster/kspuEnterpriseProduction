@@ -2,6 +2,10 @@
 
 declare(strict_types = 1);
 
+if (!isset($kspuEnterprise)){
+	die();
+}
+
 class ViewHelper {
 	private $data=array();
 	public function assign($key,$value){
