@@ -8,11 +8,11 @@ if (!isset($kspuEnterprise)){
 class ProductModel
 {
 	
-	private $mysqli;
+	private $db;
 
 	public function __construct()
 	{
-		$this->$mysqli = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
+		$this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
 	}
 
 	//materials
@@ -55,20 +55,38 @@ class ProductModel
 		
 	}
 
-	public function calculateProductPrice($pid){
+	public function calculateProductParam($pid){
 
 	}
 
-	public function calculateProductTime($pid){
-
-	}
 
 	//misc
 	public function getMisc(){
+		$result = $this->db->query('select * from misc');
 
+		$gres = array();
+
+		while ($row = $result->fetch_assoc()) {
+			$gres[$row['name']] = $row['value'];
+			//array_push($gres, $row);
+		}
+		return $gres;
 	}
 
 	public function updateMisc($data){
-		
+		$allowedKey = array('weldorSalary', 'operatorSalary', 'painterSalary', 'electrodeCost', 'electrodeSpending', 'inkCost', 'coloringDuration');
+		$content = ""; $query = "";
+
+		foreach ($data as $key => $value) {
+			if (in_array($key, $allowedKey) && is_numeric($value)){
+				$content.=" when name = '".$key."' then ".$value."\n";
+			}
+		}
+
+		if ($content != ""){
+			$query = "UPDATE misc SET value = (case".$content." end) WHERE 1";
+		}
+		return $this->db->query($query);
+		//return $query;
 	}
 }
