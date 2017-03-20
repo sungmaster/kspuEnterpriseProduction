@@ -34,6 +34,20 @@ class ProductModel
 		return $gres;
 	}
 
+	public function getDetailModelList($assoc = false){
+		$result = $this->db->query('select * from detail_mod');
+
+		$gres = array();
+
+		if ($assoc){
+			while ($row = $result->fetch_assoc()) { $gres[$row['dmid']] = $row; }
+		}
+		else{
+			while ($row = $result->fetch_assoc()) { $gres[] = $row; }
+		}
+		return $gres;
+	}
+
 	public function getProductCategoryList($assoc = false){
 		$result = $this->db->query('select * from grid_cat');
 
@@ -55,6 +69,18 @@ class ProductModel
 		}
 		else{
 			$this->db->query( 'UPDATE `detail_cat` SET `dcname`="'.$this->db->real_escape_string($data['dcname']).'" WHERE `dcid`='.intval($data['dcid']) );
+			return 0;
+		}
+	}
+
+	public function updateDetailModelList($data){
+		if ($data['dmid']==-1){
+			$this->db->query('INSERT INTO `detail_mod`(`time2m`, `btime`, `amortization2m`, `spending`, `dmarticul`, `dmname`, `dcatalog`) VALUES ('.floatval($data['time2m']).', '.floatval($data['btime']).', '.floatval($data['amortization2m']).', '.floatval($data['spending']).', "'.$this->db->real_escape_string($data['dmarticul']).'", "'.$this->db->real_escape_string($data['dmname']).'", '.intval($data['dcatalog']).')');
+			
+			return $this->db->insert_id;
+		}
+		else{
+			$this->db->query('UPDATE `detail_cat` SET `time2m`='.floatval($data['time2m']).',`btime`='.floatval($data['btime']).',`amortization2m`='.floatval($data['amortization2m']).',`spending`='.floatval($data['spending']).',`dmarticul`="'.$this->db->real_escape_string($data['dmarticul']).'",`dmname`="'.$this->db->real_escape_string($data['dmname']).'",`dcatalog`='.intval($data['dcatalog']).' WHERE `dmid`='.intval($data['dmid']) );
 			return 0;
 		}
 	}
@@ -84,7 +110,7 @@ class ProductModel
 	}
 
 	public function updateMisc($data){
-		$allowedKey = array('weldorSalary', 'operatorSalary', 'painterSalary', 'electrodeCost', 'electrodeSpending', 'inkCost', 'coloringDuration', 'weldTime');
+		$allowedKey = array('weldorSalary', 'operatorSalary', 'painterSalary', 'electrodeCost', 'electrodeSpending', 'inkCost', 'primerCost', 'coloringDuration', 'weldTime');
 		$content = ""; $query = "";
 
 		foreach ($data as $key => $value) {
@@ -96,7 +122,7 @@ class ProductModel
 		if ($content != ""){
 			$query = "UPDATE misc SET value = (case".$content." end) WHERE 1";
 			$res = $this->db->query($query);
-			$this->recalculateAllProductParam();
+			//$this->recalculateAllProductParam();
 			return $res;
 		}
 		else{
@@ -153,7 +179,7 @@ class ProductModel
 
 	//details
 	public function getAllDetail($assoc = false){
-		$result = $this->db->query('select * from detail where did > 0');
+		$result = $this->db->query('select * from detail where 1');
 
 		$gres = array();
 
@@ -166,8 +192,8 @@ class ProductModel
 		return $gres;
 	}
 
-	public function getDetailList($assoc = false){
-		$result = $this->db->query('select did, darticul, dname, dcatalog from detail where did > 0');
+	public function getDetailList($model, $assoc = false){
+		$result = $this->db->query('select * from detail where dmodel = '.intval($model));
 
 		$gres = array();
 
@@ -187,14 +213,18 @@ class ProductModel
 
 	public function updateDetail($data){
 		if ($data['did']==-1){
-			$this->db->query('INSERT INTO `detail`(`dlength`, `material`, `dtime`, `amortization`, `spending`, `darticul`, `dname`, `dcatalog`) VALUES ('.floatval($data['dlength']).','.intval($data['material']).','.intval($data['dtime']).','.floatval($data['amortization']).','.floatval($data['spending']).',"'.$this->db->real_escape_string($data['darticul']).'","'.$this->db->real_escape_string($data['dname']).'",'.intval($data['dcatalog']).')');
+			$this->db->query('INSERT INTO `detail`(`dlength`, `material`, `darticul`, `dmodel`, `count`) VALUES ('.floatval($data['dlength']).','.intval($data['material']).','.intval($data['dtime']).','.floatval($data['amortization']).','.floatval($data['spending']).',"'.$this->db->real_escape_string($data['darticul']).'",'.intval($data['dmodel']).','.intval($data['count']).')');
 			return $this->db->insert_id;
 		}
 		else{
-			$this->db->query( 'UPDATE `detail` SET `dlength`='.floatval($data['dlength']).',`material`='.intval($data['material']).',`dtime`='.intval($data['dtime']).',`amortization`='.floatval($data['amortization']).',`spending`='.floatval($data['spending']).',`darticul`="'.$this->db->real_escape_string($data['darticul']).'",`dname`="'.$this->db->real_escape_string($data['dname']).'",`dcatalog`='.intval($data['dcatalog']).' WHERE `did`='.intval($data['did']) );
+			$this->db->query( 'UPDATE `detail` SET `dlength`='.floatval($data['dlength']).',`material`='.intval($data['material']).',`darticul`="'.$this->db->real_escape_string($data['darticul']).'",`dmodel`='.intval($data['dmodel']).',`count`='.intval($data['count']).' WHERE `did`='.intval($data['did']) );
 			$this->recalculateAllProductParam();
 			return 0;
 		}
+	}
+
+	public function updateDetailCount($data){
+		$this->db->query('UPDATE `detail` SET `count`='.intval($data['count']).' WHERE `did`='.intval($data['did']));
 	}
 
 
@@ -259,67 +289,56 @@ class ProductModel
 		}
 	}
 
-	public function calculateProductParam($pid){
+	public function calculateProductParam($pid, $mid, $coloring = false){
 		$productParam = array('time' => 0, 'price' => 0 );
 
 		$misc = $this->getMisc();
 		$dList = $this->getAllDetail(true);
-		$mList = $this->getAllMaterial(true);
+		$modelList = $this->getDetailModelList(true);
+		$material = $this->getMaterial($mid);
 
 		$productInfo = $this->getProduct($pid);
-		$details = explode(',', $productInfo['details']);
+		$details = json_decode($productInfo['details']);
 
 		$detailInfo = array();
 
+		$totalInk = 0;
+
 		foreach ($details as $value) {
-			if (!array_key_exists($value, $detailInfo)){
-				$time = $dList[$value]['dtime'] + $dList[$value]['dlength']*$misc['coloringDuration'];
-				$cost = $dList[$value]['dtime']*$misc['operatorSalary']/60 + $dList[$value]['dlength']*($misc['inkCost']*$mList[$dList[$value]['material']]['inkconsumption'] + $mList[$dList[$value]['material']]['price'] + $misc['coloringDuration']*$misc['painterSalary']/60) + $dList[$value]['amortization'] + $dList[$value]['spending']; 
-				$detailInfo[$value] = array('time' => $time, 'cost' => $cost);
+			$dModel = $value[0];
+			$dLenght = $value[1];
+			$dCount = $value[2];
+			$readyCount = 0;
+
+			$rtime = $modelList[$dModel]['btime'] + ($modelList[$dModel]['time2m'] + $misc['coloringDuration'])*$dLenght;
+			foreach ($dList as $key => $det) {
+				if ($det['dmodel'] == $mid && $det['dlength'] == $dLenght){
+					$readyCount = $det['count'];
+					break;
+				}
 			}
-			$productParam['time'] += $detailInfo[$value]['time'];
-			$productParam['price'] += $detailInfo[$value]['cost'];
+			if ($readyCount >= $dCount){$time = 0;}
+			else{
+				$time = $rtime * ($dCount - $readyCount);
+			}
+
+			$cost = ($modelList[$dModel]['btime'] + $modelList[$dModel]['time2m']*$dLenght)*$misc['operatorSalary']/60 + $dLenght*($misc['primerCost']*$material['inkconsumption'] + $material['price']  + $modelList[$dModel]['amortization2m'] + $misc['coloringDuration']*$misc['painterSalary']/60 ) + $modelList[$dModel]['spending'];
+			$cost *= $dCount;
+			if ($coloring){$totalInk += $dLenght * $dCount;}
+
+			$productParam['time'] += $time;
+			$productParam['price'] += $cost;
 		}
 
 		$productParam['time'] += $productInfo['gpoints']*$misc['weldTime'];
 		$productParam['price'] += $productInfo['gpoints']*($misc['weldTime']*$misc['weldorSalary']/60 + $misc['electrodeCost']/$misc['electrodeSpending']) + $productInfo['gamortization'];
-
-		$this->db->query('update grid set price = '.$productParam['price'].', time = '.$productParam['time'].' where gid = '.$pid);
+		if ($coloring){
+			$productParam['time'] += $totalInk*$misc['coloringDuration'];
+			$productParam['price'] += $totalInk*($misc['inkCost']*$material['inkconsumption'] + $misc['coloringDuration']*$misc['painterSalary']/60 );
+		}
 
 		return $productParam;
 	}
 
-	public function recalculateAllProductParam(){
-		$productParam = array('time' => 0, 'price' => 0 );
-
-		$misc = $this->getMisc();
-		$dList = $this->getAllDetail(true);
-		$mList = $this->getAllMaterial(true);
-		$pList = $this->getAllProduct(true);
-
-		$detailInfo = array();
-
-		foreach ($pList as $pid => $productInfo) {
-			$productParam['time'] = 0; $productParam['price'] = 0;
-
-			$details = explode(',', $productInfo['details']);
-
-			foreach ($details as $value) {
-				if (!array_key_exists($value, $detailInfo)){
-					$time = $dList[$value]['dtime'] + $dList[$value]['dlength']*$misc['coloringDuration'];
-					$cost = $dList[$value]['dtime']*$misc['operatorSalary']/60 + $dList[$value]['dlength']*($misc['inkCost']*$mList[$dList[$value]['material']]['inkconsumption'] + $mList[$dList[$value]['material']]['price'] + $misc['coloringDuration']*$misc['painterSalary']/60) + $dList[$value]['amortization'] + $dList[$value]['spending']; 
-					$detailInfo[$value] = array('time' => $time, 'cost' => $cost);
-				}
-				$productParam['time'] += $detailInfo[$value]['time'];
-				$productParam['price'] += $detailInfo[$value]['cost'];
-			}
-
-			$productParam['time'] += $productInfo['gpoints']*$misc['weldTime'];
-			$productParam['price'] += $productInfo['gpoints']*($misc['weldTime']*$misc['weldorSalary']/60 + $misc['electrodeCost']/$misc['electrodeSpending']) + $productInfo['gamortization'];
-
-			$this->db->query('update grid set price = '.$productParam['price'].', time = '.$productParam['time'].' where gid = '.$pid);
-			
-		}
-	}
 
 }
