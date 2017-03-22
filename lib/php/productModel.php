@@ -258,7 +258,7 @@ class ProductModel
 	}
 
 	public function getProductList($assoc = false){
-		$result = $this->db->query('select gid, width, height, garticul, gname, price, time, gcatalog from grid where gid > 0');
+		$result = $this->db->query('select gid, width, height, garticul, gname, gcatalog from grid where gid > 0');
 
 		$gres = array();
 
