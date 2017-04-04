@@ -12,7 +12,7 @@ class ProductModel
 
 	public function __construct()
 	{
-        $this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
+		$this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
 		$this->db->set_charset("utf8");
 	}
 	public function __destruct(){
