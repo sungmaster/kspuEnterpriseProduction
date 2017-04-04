@@ -12,10 +12,7 @@ class ProductModel
 
 	public function __construct()
 	{
-	    if (__DIR__ == "Z:\\home\\localhost\\www\\kspu\\lib\\php")
-		    $this->db = new mysqli('localhost', 'root', '', 'production');
-	    else
-            $this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
+        $this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
 		$this->db->set_charset("utf8");
 	}
 	public function __destruct(){
