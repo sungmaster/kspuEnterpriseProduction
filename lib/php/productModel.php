@@ -12,7 +12,10 @@ class ProductModel
 
 	public function __construct()
 	{
-		$this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
+	    if (__DIR__ == "Z:\\home\\localhost\\www\\kspu\\lib\\php")
+		    $this->db = new mysqli('localhost', 'root', '', 'production');
+	    else
+            $this->db = new mysqli('sql304.byethost10.com', 'b10_16828832', 'AlaMote_12', 'b10_16828832_production');
 		$this->db->set_charset("utf8");
 	}
 	public function __destruct(){
@@ -21,7 +24,7 @@ class ProductModel
 
 	//category
 	public function getDetailCategoryList($assoc = false){
-		$result = $this->db->query('select * from detail_cat');
+		$result = $this->db->query('select * from detail_cat') or die($this->db->error);
 
 		$gres = array();
 
@@ -33,9 +36,8 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getDetailModelList($assoc = false){
-		$result = $this->db->query('select * from detail_mod');
+		$result = $this->db->query('select * from detail_mod') or die($this->db->error);
 
 		$gres = array();
 
@@ -47,9 +49,8 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getProductCategoryList($assoc = false){
-		$result = $this->db->query('select * from grid_cat');
+		$result = $this->db->query('select * from grid_cat') or die($this->db->error);
 
 		$gres = array();
 
@@ -61,56 +62,67 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function updateDetailCategoryList($data){
 		if ($data['dcid']==-1){
-			$this->db->query('INSERT INTO `detail_cat`(`dcname`) VALUES ("'.$this->db->real_escape_string($data['dcname']).'")');
+			$this->db->query('INSERT INTO `detail_cat`(`dcname`) VALUES ("'.$this->db->real_escape_string($data['dcname']).
+                '")') or die($this->db->error);
 			return $this->db->insert_id;
 		}
 		else{
-			$this->db->query( 'UPDATE `detail_cat` SET `dcname`="'.$this->db->real_escape_string($data['dcname']).'" WHERE `dcid`='.intval($data['dcid']) );
+			$this->db->query( 'UPDATE `detail_cat` SET `dcname`="'.$this->db->real_escape_string($data['dcname']).
+                '" WHERE `dcid`='.intval($data['dcid']) ) or die($this->db->error);
 			return 0;
 		}
 	}
-
 	public function updateDetailModelList($data){
 		if ($data['dmid']==-1){
-			$this->db->query('INSERT INTO `detail_mod`(`time2m`, `btime`, `amortization2m`, `spending`, `dmarticul`, `dmname`, `dcatalog`) VALUES ('.floatval($data['time2m']).', '.floatval($data['btime']).', '.floatval($data['amortization2m']).', '.floatval($data['spending']).', "'.$this->db->real_escape_string($data['dmarticul']).'", "'.$this->db->real_escape_string($data['dmname']).'", '.intval($data['dcatalog']).')');
-			
+			$this->db->query('INSERT INTO `detail_mod`(`time2m`, `btime`, `amortization2m`, `spending`, `dmarticul`, 
+                `dmname`, `dcatalog`) VALUES ('.floatval($data['time2m']).', '.floatval($data['btime']).', '.
+                floatval($data['amortization2m']).', '.floatval($data['spending']).', "'.
+                $this->db->real_escape_string($data['dmarticul']).'", "'.$this->db->real_escape_string($data['dmname']).
+                '", '.intval($data['dcatalog']).')') or die($this->db->error);
 			return $this->db->insert_id;
 		}
 		else{
-			$this->db->query('UPDATE `detail_cat` SET `time2m`='.floatval($data['time2m']).',`btime`='.floatval($data['btime']).',`amortization2m`='.floatval($data['amortization2m']).',`spending`='.floatval($data['spending']).',`dmarticul`="'.$this->db->real_escape_string($data['dmarticul']).'",`dmname`="'.$this->db->real_escape_string($data['dmname']).'",`dcatalog`='.intval($data['dcatalog']).' WHERE `dmid`='.intval($data['dmid']) );
+			$this->db->query('UPDATE `detail_mod` SET `time2m`='.floatval($data['time2m']).',`btime`='.floatval($data['btime']).
+                ',`amortization2m`='.floatval($data['amortization2m']).',`spending`='.floatval($data['spending']).
+                ',`dmarticul`="'.$this->db->real_escape_string($data['dmarticul']).'",`dmname`="'.
+                $this->db->real_escape_string($data['dmname']).'",`dcatalog`='.intval($data['dcatalog']).
+                ' WHERE `dmid` ='.intval($data['dmid']) ) or die($this->db->error);
+
 			return 0;
 		}
 	}
-
 	public function updateProductCategoryList($data){
 		if ($data['gcid']==-1){
-			$this->db->query('INSERT INTO `grid_cat`(`gcname`) VALUES ("'.$this->db->real_escape_string($data['gcname']).'")');
+			$this->db->query('INSERT INTO `grid_cat`(`gcname`) VALUES ("'.$this->db->real_escape_string($data['gcname']).
+                '")') or die($this->db->error);
 			return $this->db->insert_id;
 		}
 		else{
-			$this->db->query( 'UPDATE `grid_cat` SET `gcname`="'.$this->db->real_escape_string($data['gcname']).'" WHERE `gcid`='.intval($data['gcid']) );
+			$this->db->query( 'UPDATE `grid_cat` SET `gcname`="'.$this->db->real_escape_string($data['gcname']).
+                '" WHERE `gcid`='.intval($data['gcid']) ) or die($this->db->error);
 			return 0;
 		}
 	}
 
 	//misc
-	public function getMisc(){
-		$result = $this->db->query('select * from misc');
+	public function getMisc($assoc = false){
+		$result = $this->db->query('select * from misc') or die($this->db->error);
 
 		$gres = array();
 
 		while ($row = $result->fetch_assoc()) {
-			$gres[$row['name']] = $row['value'];
-			//array_push($gres, $row);
+		    if ($assoc)
+			    $gres[$row['name']] = $row['value'];
+		    else
+			    array_push($gres, $row);
 		}
 		return $gres;
 	}
-
 	public function updateMisc($data){
-		$allowedKey = array('weldorSalary', 'operatorSalary', 'painterSalary', 'electrodeCost', 'electrodeSpending', 'inkCost', 'primerCost', 'coloringDuration', 'weldTime');
+		$allowedKey = array('weldorSalary', 'operatorSalary', 'painterSalary', 'electrodeCost',
+            'electrodeSpending', 'inkCost', 'primerCost', 'coloringDuration', 'weldTime');
 		$content = ""; $query = "";
 
 		foreach ($data as $key => $value) {
@@ -121,7 +133,7 @@ class ProductModel
 
 		if ($content != ""){
 			$query = "UPDATE misc SET value = (case".$content." end) WHERE 1";
-			$res = $this->db->query($query);
+			$res = $this->db->query($query) or die($this->db->error);
 			//$this->recalculateAllProductParam();
 			return $res;
 		}
@@ -133,7 +145,7 @@ class ProductModel
 
 	//materials
 	public function getAllMaterial($assoc = false){
-		$result = $this->db->query('select * from material where mid > 0');
+		$result = $this->db->query('select * from material') or die($this->db->error);
 
 		$gres = array();
 
@@ -145,9 +157,8 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getMaterialList($assoc = false){
-		$result = $this->db->query('select mid, mname, marticul from material where mid > 0');
+		$result = $this->db->query('select mid, mname, marticul from material') or die($this->db->error);
 
 		$gres = array();
 
@@ -159,27 +170,29 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getMaterial($mid){
 		$result = $this->db->query('select * from material where mid = '.intval($mid));
-		return $result->fetch_assoc();
+		return array($result->fetch_assoc());
 	}
-
 	public function updateMaterial($data){
 		if ($data['mid']==-1){
-			$this->db->query('INSERT INTO `material`(`mname`, `marticul`, `price`, `inkconsumption`) VALUES ("'.$this->db->real_escape_string($data['mname']).'", "'.$this->db->real_escape_string($data['marticul']).'", '.floatval($data['price']).', '.floatval($data['inkconsumption']).')');
+			$this->db->query('INSERT INTO `material`(`mname`, `marticul`, `price`, `inkconsumption`) VALUES ("'.
+                $this->db->real_escape_string($data['mname']).'", "'.$this->db->real_escape_string($data['marticul']).
+                '", '.floatval($data['price']).', '.floatval($data['inkconsumption']).')') or die($this->db->error);
 			return $this->db->insert_id;
 		}
 		else{
-			$this->db->query( 'UPDATE `material` SET `mname`="'.$this->db->real_escape_string($data['mname']).'",`marticul`="'.$this->db->real_escape_string($data['marticul']).'",`price`='.floatval($data['price']).',`inkconsumption`='.floatval($data['inkconsumption']).' WHERE `mid`='.intval($data['mid']) );
-			$this->recalculateAllProductParam();
+			$this->db->query( 'UPDATE `material` SET `mname`="'.$this->db->real_escape_string($data['mname']).
+                '",`marticul`="'.$this->db->real_escape_string($data['marticul']).'",`price`='.
+                floatval($data['price']).',`inkconsumption`='.floatval($data['inkconsumption']).
+                ' WHERE `mid`='.intval($data['mid']) ) or die($this->db->error);
 			return 0;
 		}
 	}
 
 	//details
 	public function getAllDetail($assoc = false){
-		$result = $this->db->query('select * from detail where 1');
+		$result = $this->db->query('select * from detail') or die($this->db->error);
 
 		$gres = array();
 
@@ -191,9 +204,8 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getDetailList($model, $assoc = false){
-		$result = $this->db->query('select * from detail where dmodel = '.intval($model));
+		$result = $this->db->query('select * from detail where dmodel = '.intval($model)) or die($this->db->error);
 
 		$gres = array();
 
@@ -205,32 +217,37 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getDetail($did){
-		$result = $this->db->query('select * from detail where did = '.intval($did));
-		return $result->fetch_assoc();
+		$result = $this->db->query('select * from detail where did = '.intval($did)) or die($this->db->error);
+		return array($result->fetch_assoc());
 	}
-
 	public function updateDetail($data){
 		if ($data['did']==-1){
-			$this->db->query('INSERT INTO `detail`(`dlength`, `material`, `darticul`, `dmodel`, `count`) VALUES ('.floatval($data['dlength']).','.intval($data['material']).','.intval($data['dtime']).','.floatval($data['amortization']).','.floatval($data['spending']).',"'.$this->db->real_escape_string($data['darticul']).'",'.intval($data['dmodel']).','.intval($data['count']).')');
+			$this->db->query('INSERT INTO `detail`(`dlength`, `material`, `darticul`, `dmodel`, `count`) VALUES ('.
+                floatval($data['dlength']).','.intval($data['material']).',"'.
+                $this->db->real_escape_string($data['darticul']).'",'.intval($data['dmodel']).','.
+                intval($data['count']).')') or die($this->db->error);
 			return $this->db->insert_id;
 		}
 		else{
-			$this->db->query( 'UPDATE `detail` SET `dlength`='.floatval($data['dlength']).',`material`='.intval($data['material']).',`darticul`="'.$this->db->real_escape_string($data['darticul']).'",`dmodel`='.intval($data['dmodel']).',`count`='.intval($data['count']).' WHERE `did`='.intval($data['did']) );
-			$this->recalculateAllProductParam();
+			$this->db->query( 'UPDATE `detail` SET `dlength`='.floatval($data['dlength']).
+                ',`material`='.intval($data['material']).',`darticul`="'.$this->db->real_escape_string($data['darticul']).
+                '",`dmodel`='.intval($data['dmodel']).',`count`='.intval($data['count']).' WHERE `did`='.
+                intval($data['did']) ) or die($this->db->error);
+			
 			return 0;
 		}
 	}
-
 	public function updateDetailCount($data){
-		$this->db->query('UPDATE `detail` SET `count`='.intval($data['count']).' WHERE `did`='.intval($data['did']));
+		$this->db->query('UPDATE `detail` SET `count`='.intval($data['count']).
+            ' WHERE `did`='.intval($data['did'])) or die($this->db->error);
 	}
 
 
 	//production
 	public function getAllProduct($assoc = false){
-		$result = $this->db->query('select gid, details, gpoints, gamortization from grid where gid > 0');
+		$result = $this->db->query('select gid, details, gpoints, gamortization from grid where gid > 0')
+            or die($this->db->error);
 
 		$gres = array();
 
@@ -242,9 +259,8 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getAllProductFull($assoc = false){
-		$result = $this->db->query('select * from grid where gid > 0');
+		$result = $this->db->query('select * from grid where gid > 0') or die($this->db->error);
 
 		$gres = array();
 
@@ -256,9 +272,9 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getProductList($assoc = false){
-		$result = $this->db->query('select gid, width, height, garticul, gname, gcatalog from grid where gid > 0');
+		$result = $this->db->query('select gid, width, height, garticul, gname, price, time, gcatalog from grid where gid > 0')
+            or die($this->db->error);
 
 		$gres = array();
 
@@ -270,35 +286,42 @@ class ProductModel
 		}
 		return $gres;
 	}
-
 	public function getProduct($pid){
-		$result = $this->db->query('select * from grid where gid = '.intval($pid));
-		return $result->fetch_assoc();
+		$result = $this->db->query('select * from grid where gid = '.intval($pid)) or die($this->db->error);
+		return array($result->fetch_assoc());
 	}
-
 	public function updateProduct($data){
 		if ($data['gid']==-1){
-			$this->db->query('INSERT INTO `grid`(`details`, `width`, `height`, `garticul`, `gname`, `gpoints`, `gamortization`, `gcatalog`) VALUES ("'.$this->db->real_escape_string($data['details']).'",'.intval($data['width']).','.intval($data['height']).',"'.$this->db->real_escape_string($data['garticul']).'","'.$this->db->real_escape_string($data['gname']).'",'.intval($data['gpoints']).','.floatval($data['gamortization']).','.intval($data['gcatalog']).')');
-			$this->calculateProductParam($this->db->insert_id);
+			$this->db->query('INSERT INTO `grid`(`details`, `width`, `height`, `garticul`, `gname`, `gpoints`, 
+                `gamortization`, `gcatalog`) VALUES ("'.$this->db->real_escape_string($data['details']).
+                '",'.intval($data['width']).','.intval($data['height']).',"'.
+                $this->db->real_escape_string($data['garticul']).'","'.$this->db->real_escape_string($data['gname']).
+                '",'.intval($data['gpoints']).','.floatval($data['gamortization']).','.intval($data['gcatalog']).')')
+                or die($this->db->error);
+			//$this->calculateProductParam($this->db->insert_id);
 			return $this->db->insert_id;
 		}
 		else{
-			$this->db->query( 'UPDATE `grid` SET `details`="'.$this->db->real_escape_string($data['details']).'",`width`='.intval($data['width']).',`height`='.intval($data['height']).',`garticul`="'.$this->db->real_escape_string($data['garticul']).'",`gname`="'.$this->db->real_escape_string($data['gname']).'",`gpoints`='.intval($data['gpoints']).',`gamortization`='.floatval($data['gamortization']).',`gcatalog`='.intval($data['gcatalog']).' WHERE `gid`='.intval($data['gid']) );
-			$this->calculateProductParam(intval($data['gid']));
+			$this->db->query( 'UPDATE `grid` SET `details`="'.$this->db->real_escape_string($data['details']).
+                '",`width`='.intval($data['width']).',`height`='.intval($data['height']).',`garticul`="'.
+                $this->db->real_escape_string($data['garticul']).'",`gname`="'.
+                $this->db->real_escape_string($data['gname']).'",`gpoints`='.intval($data['gpoints']).
+                ',`gamortization`='.floatval($data['gamortization']).',`gcatalog`='.intval($data['gcatalog']).
+                ' WHERE `gid`='.intval($data['gid']) ) or die($this->db->error);
+			//$this->calculateProductParam(intval($data['gid']));
 			return 0;
 		}
 	}
-
 	public function calculateProductParam($pid, $mid, $coloring = false){
-		$productParam = array('time' => 0, 'price' => 0 );
+		$productParam = array('time' => 0, 'price' => 0);
 
-		$misc = $this->getMisc();
+		$misc = $this->getMisc(true);
 		$dList = $this->getAllDetail(true);
 		$modelList = $this->getDetailModelList(true);
 		$material = $this->getMaterial($mid);
 
 		$productInfo = $this->getProduct($pid);
-		$details = json_decode($productInfo['details']);
+		$details = json_decode($productInfo[0]['details']);
 
 		$detailInfo = array();
 
@@ -337,7 +360,7 @@ class ProductModel
 			$productParam['price'] += $totalInk*($misc['inkCost']*$material['inkconsumption'] + $misc['coloringDuration']*$misc['painterSalary']/60 );
 		}
 
-		return $productParam;
+		return array($productParam);
 	}
 
 
