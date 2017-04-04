@@ -15,7 +15,7 @@ class ProductModel
 	    if (__DIR__ == "Z:\\home\\localhost\\www\\kspu\\lib\\php")
 		    $this->db = new mysqli('localhost', 'root', '', 'production');
 	    else
-            $this->db = new mysqli('sql304.byethost10.com', 'b10_16828832', 'AlaMote_12', 'b10_16828832_production');
+            $this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
 		$this->db->set_charset("utf8");
 	}
 	public function __destruct(){
