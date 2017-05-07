@@ -331,7 +331,7 @@ class ProductModel
 			return 0;
 		}
 	}
-	public function calculateProductParam($pid, $mid, $type, $coloring = false){
+	public function calculateProductParam($pid, $mid, $type, $coloring = false, $count = 1){
 		$productParam = array('time' => 0, 'price' => 0);
 
 		$misc = $this->getMisc(true);
@@ -351,7 +351,7 @@ class ProductModel
 		foreach ($details as $value) {
 			$dModel = $value[0];
 			$dLenght = $value[1];
-			$dCount = $value[2];
+			$dCount = $value[2] * $count;
 			$readyCount = 0;
 
 			$rtime = $modelList[$dModel]['btime'] + ($modelList[$dModel]['time2m'] + $misc['coloringDuration'])*$dLenght;
@@ -374,11 +374,11 @@ class ProductModel
 			$productParam['price'] += $cost;
 		}
 
-		$productParam['time'] += $productInfo['gpoints']*$misc['weldTime'];
-		$productParam['price'] += $productInfo['gpoints']*($misc['weldTime']*$misc['weldorSalary']/60 + $misc['electrodeCost']/$misc['electrodeSpending']) + $productInfo['gamortization'];
+		$productParam['time'] += $productInfo['gpoints']*$misc['weldTime']*$count;
+		$productParam['price'] += $productInfo['gpoints']*$count*($misc['weldTime']*$misc['weldorSalary']/60 + $misc['electrodeCost']/$misc['electrodeSpending']) + $productInfo['gamortization']*$count;
 		if ($coloring){
-			$productParam['time'] += $totalInk*$misc['coloringDuration'];
-			$productParam['price'] += $totalInk*($misc['inkCost']*$material['inkconsumption'] + $misc['coloringDuration']*$misc['painterSalary']/60 );
+			$productParam['time'] += $totalInk*$misc['coloringDuration']*$count;
+			$productParam['price'] += $totalInk*$count*($misc['inkCost']*$material['inkconsumption'] + $misc['coloringDuration']*$misc['painterSalary']/60 );
 		}
 
 		return $productParam;
