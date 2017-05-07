@@ -1,0 +1,406 @@
+/* fallback */
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://fonts.gstatic.com/s/materialicons/v22/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+main{
+    margin-bottom: 100px;
+}
+*:focus {
+    outline: 0px solid;
+}
+.pt-50{
+    padding-top: 50px;
+}
+.pt-100{
+    padding-top: 100px;
+}
+.container{
+    width: 1000px;
+    margin: 0 auto;
+}
+.row{
+    height: auto;
+    overflow: hidden;
+}
+.header-search{
+    width: 750px;
+    float: left;
+}
+.header-button{
+    float: left;
+    width: 250px;
+}
+.header-search form{
+    position: relative;
+}
+.header-search form input[type="text"] {
+    background-color: #333333;
+    border: medium none;
+    color: #909090;
+    font-size: 12px;
+    line-height: 30px;
+    padding: 15px 24px;
+    width: 100%;
+    -webkit-transition: all 0.5s ease 0s;
+    transition: all 0.5s ease 0s;
+    box-sizing: border-box;
+}
+.header-search form input[type="submit"] {
+    background: rgba(0, 0, 0, 0) url(../img/search-icon.png) no-repeat scroll center center;
+    border: medium none;
+    height: 60px;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-indent: -99999px;
+    width: 70px;
+}
+.header-search form input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+.btn.btn-light-b {
+    border: 2px solid #333333;
+    background: none;
+    font-family: "Karla", arial, sans-serif;
+    font-weight: normal;
+    color: #333333;
+    float: right;
+
+    transition: all 0.5s ease-in-out 0s;
+}
+.btn {
+    -webkit-border-radius: 0;
+    -khtml-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+    border: 2px solid transparent;
+    display: inline-block;
+    line-height: 2.9;
+    padding: 8px 26px;
+    font-weight: bold;
+    /*font-size: 14px;*/
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-family: "Karla", sans-serif;
+}
+input[type=submit].btn.btn-light-b:hover {
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+}
+input[type=text].btn.btn-light-b{
+    margin-right: 20px;
+    text-transform: none;
+}
+
+.list-product{
+    margin-top: 80px;
+}
+.product-item{
+    width: 33.3%;
+    float: left;
+    position: relative;
+    height: 333px;
+    overflow: hidden;
+}
+.product-item:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 5;
+}
+.product-item:hover img{
+    margin: -5%;
+    width: 110%;
+}
+.product-item a:hover{
+    text-decoration: underline;
+}
+.product-item img{
+    width: 100%;
+    transition: all 0.5s ease-in-out 0s;
+}
+.product-item-content {
+    width: 100%;
+    position: absolute;
+    -webkit-transform: translate(-50%, -50%);
+    -khtml-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    top: 60%;
+    left: 50%;
+    z-index: 10;
+    text-align: center;
+    text-shadow: 1px 1px 5px #000;
+}
+.product-item-content a{
+    font-size: 30px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
+    transition: all 0.5s ease-in-out 0s;
+}
+.sku{
+    color: #cbcbcb;
+    font-size: 16px;
+    width: 50%;
+    margin: 5px auto;
+    text-align: right;
+    margin-top: 40px;
+}
+.price{
+    width: 50%;
+    margin: 5px auto;
+    text-align: right;
+    color: #fff;
+    font-size: 20px;
+}
+
+
+
+.lists{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.categorys{
+    width: 600px;
+}
+.models{
+    width: 400px;
+}
+.categorys, .models{
+    float: left;
+    padding: 20px;
+    padding-right: 0;
+    box-sizing: border-box;
+}
+.categorys-title, .models-title{
+    font-size: 20px;
+}
+.categorys a, .models a, .material-list a, .categorys-list a{
+    text-decoration: none;
+    color: #333;
+}
+.categorys ul li, .models ul li, .categorys-list li{
+    list-style: none;
+}
+.categorys input, .models input{
+    float: left !important;
+}
+.categorys-list, .models-list{
+    border: solid 2px;
+    margin: 10px 12px;
+    overflow-y: scroll;
+    height: 200px;
+    width: 430px;
+}
+
+.material-list{
+    margin-top: 20px;
+    padding: 20px;
+    padding-right: 0;
+    box-sizing: border-box;
+}
+.material-list, .material-list table{
+    width: 100%;
+}
+.material-list table tr{
+    border: solid 2px #333;
+    border-top: none;
+    display: block;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+
+    transition: all 0.4s;
+}
+.material-list table tr:hover{
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+}
+.material-list table tr:hover a{
+    color: #fff;
+}
+.material-list table tr:first-child{
+    border-top: solid 2px #333;
+}
+.material-list table tr td{
+    width: 24%;
+    text-align: center;
+    display: inline-block;
+}
+.align-left{
+    text-align: left !important;
+}
+.align-right{
+    text-align: right !important;
+}
+
+/* ----- MENU ----- */
+
+.menu_main{
+    background: #333;
+    width: 100%;
+    position: fixed;
+    z-index: 20;
+}
+.menu_main .row{
+    width: 1000px;
+    margin: 0 auto;
+}
+.menu_main ul{
+    list-style: none;
+}
+.menu_main ul li{
+    display: inline-block;
+    margin-left: 72px;
+}
+.menu_main ul li a{
+    color: #fff;
+    font-size: 20px;
+    font-weight: 900;
+    text-decoration: none;
+}
+.slvl{
+    position: absolute;
+    display: none;
+    background: #333;
+    width: 200px;
+    z-index: 1;
+    padding: 15px 10px;
+    padding-top: 30px;
+}
+ul.slvl li{
+    margin-left: 0px;
+    padding: 5px;
+    display: block;
+}
+ul.slvl li a{
+    font-size: 14px;
+}
+.menu_main  ul > li:hover .slvl{
+    display: block;
+}
+
+
+/*index*/
+.category-item {
+    width: 33%;
+    display: inline-block;
+}
+.category-item img{
+    width: 100%;
+}
+.category-item a{
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    right: 30%;
+    text-align: center;
+    background: #000;
+    color: #fff;
+    padding: 20px 0;
+    border-radius: 25%;
+    display: none;
+}
+.category-item:hover a{
+    display: block;
+}
+.category-item:hover img {
+    opacity: 0.6;
+}
+.category-name{
+    text-align: center;
+    padding: 20px 0;
+    font-size: 24px;
+    font-weight: 900;
+}
+/*new_material*/
+.container_photo{
+    float: right;
+    width: 30%;
+}
+.container_sku{
+    float: left;
+    width: 60%;
+    margin-right: 10%;
+}
+.container_sku input[type="text"]{
+    border: 2px solid #333333;
+    background: none;
+    font-family: "Karla", arial, sans-serif;
+    font-weight: normal;
+    color: #333333;
+    height: 35px;
+    padding: 0 5px;
+    float: left;
+    width: 70%;
+    margin: 12px;
+}
+.container_sku input[type="submit"]{
+    border: 2px solid #333333;
+    background: #333333;
+    font-family: "Karla", arial, sans-serif;
+    font-weight: normal;
+    color: #ffffff;
+    height: 35px;
+    padding: 0 5px;
+    float: left;
+    width: 30%;
+    margin: 12px;
+    cursor: pointer;
+}
+.container_sku > a{
+    text-decoration: none;
+    text-align: center;
+    padding: 6px;
+    height: auto;
+    border: 2px solid #333333;
+    background: #333333;
+    font-family: "Karla", arial, sans-serif;
+    font-weight: normal;
+    color: #ffffff;
+    float: left;
+    width: 30%;
+    margin: 12px;
+    cursor: pointer;
+}

@@ -12,7 +12,10 @@ class ProductModel
 
 	public function __construct()
 	{
-		$this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
+		if (strpos(__DIR__, "alamote"))
+			$this->db = new mysqli('localhost', 'root', '', 'production');
+		else
+			$this->db = new mysqli('localhost', 'phpuser', 'QDDWlc9m9B4XTJMS', 'production');
 		$this->db->set_charset("utf8");
 	}
 	public function __destruct(){
@@ -46,6 +49,20 @@ class ProductModel
 		}
 		return $gres;
 	}
+    public function getModel($cat, $assoc = false){
+
+        $result = $this->db->query('select dmid, dmname from detail_mod where dcatalog = '.$cat) or die($this->db->error);
+
+        $gres = array();
+
+        if ($assoc){
+            while ($row = $result->fetch_assoc()) { $gres[$row['dmid']] = $row; }
+        }
+        else{
+            while ($row = $result->fetch_assoc()) { $gres[] = $row; }
+        }
+        return $gres;
+    }
 	public function getProductCategoryList($assoc = false){
 		$result = $this->db->query('select * from grid_cat') or die($this->db->error);
 
@@ -189,9 +206,10 @@ class ProductModel
 
 	//details
 	public function getAllDetail($assoc = false){
-		$result = $this->db->query('select * from detail') or die($this->db->error);
+		$result = $this->db->query('select did, material.mname, detail.dlength, detail.count from detail, material 
+                      WHERE detail.material = material.mid') or die($this->db->error);
 
-		$gres = array();
+		$gres = array("details");
 
 		if ($assoc){
 			while ($row = $result->fetch_assoc()) { $gres[$row['did']] = $row; }
@@ -202,9 +220,10 @@ class ProductModel
 		return $gres;
 	}
 	public function getDetailList($model, $assoc = false){
-		$result = $this->db->query('select * from detail where dmodel = '.intval($model)) or die($this->db->error);
+		$result = $this->db->query('select material.mname, detail.dlength, detail.count from detail, material 
+                      WHERE detail.material = material.mid and dmodel = '.intval($model)) or die($this->db->error);
 
-		$gres = array();
+		$gres = array("details");
 
 		if ($assoc){
 			while ($row = $result->fetch_assoc()) { $gres[$row['did']] = $row; }
@@ -283,8 +302,11 @@ class ProductModel
 		}
 		return $gres;
 	}
-	public function getProduct($pid){
-		$result = $this->db->query('select * from grid where gid = '.intval($pid)) or die($this->db->error);
+	public function getProduct($pid, $type){
+	    if ($type == "simple")
+            $result = $this->db->query('select * from detail_mod where dmid = '.intval($pid)) or die($this->db->error);
+        else
+	        $result = $this->db->query('select * from grid where gid = '.intval($pid)) or die($this->db->error);
 		return array($result->fetch_assoc());
 	}
 	public function updateProduct($data){
@@ -309,7 +331,7 @@ class ProductModel
 			return 0;
 		}
 	}
-	public function calculateProductParam($pid, $mid, $coloring = false){
+	public function calculateProductParam($pid, $mid, $type, $coloring = false){
 		$productParam = array('time' => 0, 'price' => 0);
 
 		$misc = $this->getMisc(true);
@@ -317,7 +339,9 @@ class ProductModel
 		$modelList = $this->getDetailModelList(true);
 		$material = $this->getMaterial($mid);
 
-		$productInfo = $this->getProduct($pid);
+		$productInfo = $this->getProduct($pid, $type);
+		if ($type = "simple")
+            $details = json_decode("[[".$productInfo["dmid"].", ".$productInfo["dmid"]."]]");
 		$details = json_decode($productInfo[0]['details']);
 
 		$detailInfo = array();
@@ -357,7 +381,7 @@ class ProductModel
 			$productParam['price'] += $totalInk*($misc['inkCost']*$material['inkconsumption'] + $misc['coloringDuration']*$misc['painterSalary']/60 );
 		}
 
-		return array($productParam);
+		return $productParam;
 	}
 
 

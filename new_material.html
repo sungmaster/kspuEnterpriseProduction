@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый материал</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/scripts.js"></script>
+</head>
+<body>
+<div class="container menu_main">
+    <div class="row ">
+        <ul>
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">Материал</a>
+                <ul class="slvl">
+                    <li><a href="#">Добавить материал</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Простая деталь</a>
+                <ul class="slvl">
+                    <li><a href="#">Создать простую деталь</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Сложная деталь</a>
+                <ul class="slvl">
+                    <li><a href="#">Создать сложную деталь</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<div class="container pt-100">
+    <h1>Создание нового материала</h1>
+    <div class="container_photo">
+        <input type="submit" class=" btn btn-light-b" value="Фото">
+    </div>
+    <div class="container_sku">
+        <input id="mat_name" type="text" class="" placeholder="Название">
+        <input id="mat_art" type="text" class="" placeholder="Артикул">
+        <input id="mat_price" type="text" class="" placeholder="Цена за 1м.">
+        <input id="mat_color" type="text" class="" placeholder="Расход на покраску">
+
+        <a href="#" onclick="history.back(); return false;">Назад</a>
+        <input id="mat_submit" type="submit" value="Зберегти">
+    </div>
+</div>
+</body>
+</html>

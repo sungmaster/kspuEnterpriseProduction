@@ -13,7 +13,7 @@ class ViewHelper {
 	}
 	public function display($htmlPage){
 		extract($this->data);        
-		include_once $htmlPage;
+		include_once ($htmlPage);
 		
 	}
 }

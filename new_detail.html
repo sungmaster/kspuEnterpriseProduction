@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Конструктор простой детали</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-1.9.1.js"></script>
+    <script src="js/scripts.js"></script>
+</head>
+<body>
+<div class="container menu_main">
+    <div class="row ">
+        <ul>
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">Материал</a>
+                <ul class="slvl">
+                    <li><a href="#">Добавить материал</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Простая деталь</a>
+                <ul class="slvl">
+                    <li><a href="#">Создать простую деталь</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Сложная деталь</a>
+                <ul class="slvl">
+                    <li><a href="#">Создать сложную деталь</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<div class="container pt-100">
+    <h1>Создание новой детали</h1>
+
+    <div class="container_photo">
+        <input type="submit" class=" btn btn-light-b" value="Фото">
+    </div>
+    <div class="container_sku">
+        <input id="det_name" type="text" class="" placeholder="Название">
+        <input id="det_art" type="text" class="" placeholder="Артикул">
+        <input id=det_time"" type="text" class="" placeholder="Время работы">
+        <input id="det_length" type="text" class="" placeholder="Длина прута">
+        <br>
+        <div id="det_cat" class="categorys-list">
+            <ul>
+                <li><a href="#">category 1</a></li>
+                <li><a href="#">category 2</a></li>
+                <li><a href="#">category 3</a></li>
+                <li><a href="#">category 4</a></li>
+                <li><a href="#">category 5</a></li>
+                <li><a href="#">category 6</a></li>
+                <li><a href="#">category 7</a></li>
+                <li><a href="#">category 8</a></li>
+                <li><a href="#">category 1</a></li>
+                <li><a href="#">category 2</a></li>
+                <li><a href="#">category 3</a></li>
+                <li><a href="#">category 4</a></li>
+                <li><a href="#">category 5</a></li>
+                <li><a href="#">category 6</a></li>
+                <li><a href="#">category 7</a></li>
+                <li><a href="#">category 8</a></li>
+            </ul>
+        </div>
+        <a id="del_new_cat" href="#" style="width: 418px;">Добавить категорию</a>
+
+        <a href="#" onclick="history.back(); return false;">Назад</a>
+        <input type="submit" value="Зберегти">
+    </div>
+
+</body>
+</html>

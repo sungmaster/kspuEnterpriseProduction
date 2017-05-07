@@ -33,6 +33,10 @@ class Controller
                     $this->getDetailModelList();
                     break;
                 }
+                case "getmodel": {
+                    $this->getModel();
+                    break;
+                }
                 case "getproductcategorylist": {
                     $this->getProductCategoryList();
                     break;
@@ -125,19 +129,25 @@ class Controller
     public function getDetailCategoryList()
     {
         $this->viewHelper->assign("output_data", $this->model->getDetailCategoryList());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function getDetailModelList()
     {
-        $this->viewHelper->assign("output_data", $this->model->getDetailModelList());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->assign("output_data", $this->model->getDetailModelList(true));
+        $this->viewHelper->display("./lib/php/pages/simple_detail.php");
     }
-
+    public function getModel()
+    {
+        if (!isset($_GET["cat"]))
+            return;
+        $this->viewHelper->assign("output_data", $this->model->getModel($_GET["cat"]));
+        $this->viewHelper->display("./list_output.php");
+    }
     public function getProductCategoryList()
     {
         $this->viewHelper->assign("output_data", $this->model->getProductCategoryList());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function updateDetailCategoryList()
@@ -160,7 +170,8 @@ class Controller
             $data["dcname"] = $_GET["dcname"];
         }
         $this->model->updateDetailCategoryList($data);
-
+        $this->viewHelper->assign("output_data", $this->model->getDetailCategoryList());
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function updateDetailModelList()
@@ -178,6 +189,8 @@ class Controller
             }
         }
         $this->model->updateDetailModelList($data);
+        $this->viewHelper->assign("output_data", $this->model->getModel($_GET["dcatalog"]));
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function updateProductCategoryList()
@@ -201,7 +214,7 @@ class Controller
     public function getMisc()
     {
         $this->viewHelper->assign("output_data", $this->model->getMisc());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function updateMisc()
@@ -224,14 +237,14 @@ class Controller
 
     public function getAllMaterial()
     {
-        $this->viewHelper->assign("output_data", $this->model->getAllMaterial());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->assign("output_data", $this->model->getAllMaterial(true));
+        $this->viewHelper->display("./lib/php/pages/material.php");
     }
 
     public function getMaterialList()
     {
         $this->viewHelper->assign("output_data", $this->model->getMaterialList());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function getMaterial()
@@ -240,7 +253,7 @@ class Controller
             return;
         $mid = intval($_GET["mid"]);
         $this->viewHelper->assign("output_data", $this->model->getMaterial($mid));
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function updateMaterial()
@@ -266,7 +279,7 @@ class Controller
     public function getAllDetail()
     {
         $this->viewHelper->assign("output_data", $this->model->getAllDetail());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function getDetailList()
@@ -275,7 +288,7 @@ class Controller
             return;
 
         $this->viewHelper->assign("output_data", $this->model->getDetailList(intval($_GET["model"])));
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function getDetail()
@@ -284,7 +297,7 @@ class Controller
             return;
 
         $this->viewHelper->assign("output_data", $this->model->getDetail(intval($_GET["did"])));
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function updateDetail()
@@ -304,7 +317,10 @@ class Controller
                 $data[$param] = $_GET[$param];
             }
         }
+        //print_r($data);
         $this->model->updateDetail($data);
+        $this->viewHelper->assign("output_data", $this->model->getDetailList(intval($_GET["dmodel"])));
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function updateDetailCount()
@@ -321,13 +337,13 @@ class Controller
     public function getAllProduct()
     {
         $this->viewHelper->assign("output_data", $this->model->getAllProduct());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function getProductList()
     {
         $this->viewHelper->assign("output_data", $this->model->getProductList());
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function getProduct()
@@ -336,7 +352,7 @@ class Controller
             return;
 
         $this->viewHelper->assign("output_data", $this->model->getProduct(intval($_GET["pid"])));
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
     public function updateProduct()
@@ -360,14 +376,21 @@ class Controller
         $this->model->updateDetail($data);
     }
 
-    public function calculateProductParam()
+    public function calculateProductParam($pid = 0, $mid = 0, $coloring = false)
     {
-        if (!isset($_GET["pid"]) || !isset($_GET["mid"]))
+        if (!isset($_GET["pid"]) || !isset($_GET["mid"]) || !isset($_GET["type"]))
             return;
 
-        $productParam = $this->model->calculateProductParam(intval($_GET["pid"]), intval($_GET["mid"]));
+        $pid = $_GET["pid"];
+        $mid = $_GET["mid"];
+        $type = $_GET["type"];
+
+        /*if ($pid == 0 && $mid == 0)
+            return;*/
+
+        $productParam = $this->model->calculateProductParam(intval($pid), intval($mid), $type);
         $this->viewHelper->assign("output_data", $productParam);
-        $this->viewHelper->display("./lib/php/pages/temp_out.php");
+        $this->viewHelper->display("./list_output.php");
     }
 
 }
