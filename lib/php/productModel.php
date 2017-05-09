@@ -235,10 +235,9 @@ class ProductModel
 
 	//details
 	public function getAllDetail($assoc = false){
-		$result = $this->db->query('select detail.*, material.mname from detail, material 
-                      WHERE detail.material = material.mid') or die($this->db->error);
+		$result = $this->db->query('select detail.* from detail') or die($this->db->error);
 
-		$gres = array("details");
+		$gres = array();
 
 		if ($assoc){
 			while ($row = $result->fetch_assoc()) { $gres[$row['did']] = $row; }
@@ -252,7 +251,7 @@ class ProductModel
 		$result = $this->db->query('select material.mname, detail.dlength, detail.count from detail, material 
                       WHERE detail.material = material.mid and dmodel = '.intval($model)) or die($this->db->error);
 
-		$gres = array("details");
+		$gres = array();
 
 		if ($assoc){
 			while ($row = $result->fetch_assoc()) { $gres[$row['did']] = $row; }
@@ -383,6 +382,7 @@ class ProductModel
 
 			$rtime = $modelList[$dModel]['btime'] + ($modelList[$dModel]['time2m'] + $misc['coloringDuration'])*$dLenght;
 			foreach ($dList as $key => $det) {
+			    print_r($det);
 				if ($det['dmodel'] == $mid && $det['dlength'] == $dLenght){
 					$readyCount = $det['count'];
 					break;
