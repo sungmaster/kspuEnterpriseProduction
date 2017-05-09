@@ -123,15 +123,16 @@ input[type=text].btn.btn-light-b{
 }
 
 .list-product{
-    margin-top: 80px;
+    margin-top: 20px;
 }
 .product-item{
-    width: 33.3%;
+    width: 32%;
     float: left;
     position: relative;
     height: 333px;
     overflow: hidden;
     text-align: -webkit-center;
+    margin: 3px;
 }
 .product-item:after {
     content: '';
