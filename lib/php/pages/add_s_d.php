@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Конструктор простой детали</title>
-    <link rel="shortcut icon" href="/img/icon.png" type="image/png">
+    <link rel="shortcut icon" href="img/icon.png" type="image/png">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-1.9.1.js"></script>
 </head>

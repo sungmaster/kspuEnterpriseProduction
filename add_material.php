@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Новый материал</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="/img/icon.png" type="image/png">
+    <link rel="shortcut icon" href="img/icon.png" type="image/png">
     <script src="js/jquery-1.9.1.js"></script>
 </head>
 <body>
