@@ -282,6 +282,11 @@ input[type=text].btn.btn-light-b{
 
 /* ----- MENU ----- */
 
+#sett_img {
+    position: absolute;
+    top: 15px;
+    height: 32px;
+}
 .menu_main{
     background: #333;
     width: 100%;
@@ -297,7 +302,7 @@ input[type=text].btn.btn-light-b{
 }
 .menu_main ul li{
     display: inline-block;
-    margin-left: 72px;
+    margin-left: 40px;
 }
 .menu_main ul li a{
     color: #fff;
@@ -364,6 +369,24 @@ ul.slvl li a{
     float: right;
     width: 30%;
 }
+#table_misc {
+    width: 100%;
+
+}
+#table_misc td {
+    //text-align: -webkit-center;
+}
+.misc input[type="text"] {
+    width: 50%;
+    border: 2px solid #333333;
+    background: none;
+    font-family: "Karla", arial, sans-serif;
+    font-weight: normal;
+    color: #333333;
+    height: 35px;
+    padding: 3px;
+    margin-bottom: 5px;
+}
 .container_sku{
     //text-align: -webkit-center;
     float: left;
@@ -382,7 +405,7 @@ ul.slvl li a{
     width: 96.5%;
     margin-bottom: 5px;
 }
-.container_sku input[type="button"]{
+.container_sku input[type="button"], .misc input[type="button"]{
     border: 2px solid #333333;
     background: #333333;
     font-family: "Karla", arial, sans-serif;

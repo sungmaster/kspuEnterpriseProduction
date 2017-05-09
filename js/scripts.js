@@ -153,6 +153,28 @@ function get_img() {
     xmlhttp.send();
 }
 
+$("#save").click(function () {
+    var params = "";
+    var t_par = ['weldorSalary', 'operatorSalary', 'painterSalary', 'electrodeCost',
+        'electrodeSpending', 'inkCost', 'primerCost', 'coloringDuration', 'weldTime'];
+    for (var i = 0; i < t_par.length; i++) {
+        params += "&" + t_par[i] + "=" + $("#"+t_par[i]).val();
+    }
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.open("GET", "lib/php/pages/xmlhttp.php?q=updateMisc"+params, true);
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            alert("Готово!");
+            location.reload();
+        }
+    };
+    xmlhttp.send();
+});
+
+
+
 
 
 

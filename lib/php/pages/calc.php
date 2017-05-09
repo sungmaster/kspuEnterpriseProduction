@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Расчет затрат</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-1.9.1.js"></script>
 </head>

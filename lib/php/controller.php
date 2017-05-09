@@ -139,7 +139,7 @@ class Controller
     public function getDetailCategoryList()
     {
         $this->viewHelper->assign("output_data", $this->model->getDetailCategoryList());
-        $this->viewHelper->display("./list_output.php");
+        $this->viewHelper->display("./lib/php/pages/add_s_d.php");
     }
 
     public function getDetailModelList()
@@ -238,7 +238,7 @@ class Controller
     public function getMisc()
     {
         $this->viewHelper->assign("output_data", $this->model->getMisc());
-        $this->viewHelper->display("./list_output.php");
+        $this->viewHelper->display("./lib/php/pages/settings.php");
     }
 
     public function updateMisc()
