@@ -12,11 +12,11 @@ function get_detail_price_time(pid, mid, calc) {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             if (calc == 0) {
-                $("#" + pid + "_price").html(Math.floor(parseFloat(xmlhttp.responseText.split("&")[0]) * 100) / 100);
+                $("#" + pid + "_price").html(Math.floor(parseFloat(xmlhttp.responseText.split("&")[0]) * 100) / 100 + " грн.");
                 $("#" + pid + "_time").html(norm_time(parseInt(xmlhttp.responseText.split("&")[1])));
             }
             else {
-                $("#tprice").val(xmlhttp.responseText.split("&")[0] + " грн.");
+                $("#tprice").val(Math.floor(parseFloat(xmlhttp.responseText.split("&")[0]) * 100) / 100 + " грн.");
                 $("#ttime").val(norm_time(parseInt(xmlhttp.responseText.split("&")[1])));
             }
         }
