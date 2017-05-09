@@ -382,7 +382,7 @@ class ProductModel
 
 			$rtime = $modelList[$dModel]['btime'] + ($modelList[$dModel]['time2m'] + $misc['coloringDuration'])*$dLenght;
 			foreach ($dList as $key => $det) {
-			    print_r($det);
+			    /*print_r($det);*/
 				if ($det['dmodel'] == $mid && $det['dlength'] == $dLenght){
 					$readyCount = $det['count'];
 					break;
