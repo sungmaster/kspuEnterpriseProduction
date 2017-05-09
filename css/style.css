@@ -226,11 +226,16 @@ input[type=text].btn.btn-light-b{
     float: left !important;
 }
 .categorys-list, .models-list{
-    border: solid 2px;
+    /*border: solid 2px;
     margin: 10px 12px;
     overflow-y: scroll;
     height: 200px;
-    width: 430px;
+    width: 430px;*/
+    border: solid 2px;
+    margin: 10px 0px 10px 0;
+    overflow-y: scroll;
+    height: 200px;
+    width: 440px;
 }
 
 .material-list{
@@ -361,8 +366,8 @@ ul.slvl li a{
 }
 .container_sku{
     float: left;
-    width: 60%;
-    margin-right: 10%;
+    width: 45%;
+    /*margin-right: 10%;*/
 }
 .container_sku input[type="text"]{
     border: 2px solid #333333;
@@ -371,12 +376,12 @@ ul.slvl li a{
     font-weight: normal;
     color: #333333;
     height: 35px;
-    padding: 0 5px;
+    padding: 3px;
     float: left;
-    width: 70%;
-    margin: 12px;
+    width: 96.5%;
+    margin-bottom: 5px;
 }
-.container_sku input[type="submit"]{
+.container_sku input[type="button"]{
     border: 2px solid #333333;
     background: #333333;
     font-family: "Karla", arial, sans-serif;
@@ -384,9 +389,9 @@ ul.slvl li a{
     color: #ffffff;
     height: 35px;
     padding: 0 5px;
-    float: left;
-    width: 30%;
-    margin: 12px;
+    /*float: right;*/
+    width: 49%;
+    /*margin: 12px;*/
     cursor: pointer;
 }
 .container_sku > a{
@@ -400,7 +405,11 @@ ul.slvl li a{
     font-weight: normal;
     color: #ffffff;
     float: left;
-    width: 30%;
-    margin: 12px;
+    width: 50%;
+    /*margin: 12px;*/
+    cursor: pointer;
+}
+
+.catalog {
     cursor: pointer;
 }

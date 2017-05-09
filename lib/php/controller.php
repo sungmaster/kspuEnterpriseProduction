@@ -24,105 +24,115 @@ class Controller
     public function handle()
     {
         if (isset($_GET["q"])) {
-            switch (strtolower($_GET["q"])) {
-                case "getdetailcategorylist": {
-                    $this->getDetailCategoryList();
-                    break;
-                }
-                case "getdetailmodellist": {
-                    $this->getDetailModelList();
-                    break;
-                }
-                case "getmodel": {
-                    $this->getModel();
-                    break;
-                }
-                case "getproductcategorylist": {
-                    $this->getProductCategoryList();
-                    break;
-                }
-                case "updatedetailcategorylist": {
-                    $this->updateDetailCategoryList();
-                    break;
-                }
-                case "updatedetailmodellist": {
-                    $this->updateDetailModelList();
-                    break;
-                }
-                case "updateproductcategorylist": {
-                    $this->updateProductCategoryList();
-                    break;
-                }
-                case "getmisc": {
-                    $this->getMisc();
-                    break;
-                }
-                case "updatemisc": {
-                    $this->updateMisc();
-                    break;
-                }
-                case "getallmaterial": {
-                    $this->getAllMaterial();
-                    break;
-                }
-                case "getmateriallist": {
-                    $this->getMaterialList();
-                    break;
-                }
-                case "getmaterial": {
-                    $this->getMaterial();
-                    break;
-                }
-                case "updatematerial": {
-                    $this->updateMaterial();
-                    break;
-                }
-                case "getalldetail": {
-                    $this->getAllDetail();
-                    break;
-                }
-                case "getdetaillist": {
-                    $this->getDetailList();
-                    break;
-                }
-                case "getdetail": {
-                    $this->getDetail();
-                    break;
-                }
-                case "updatedetail": {
-                    $this->updateDetail();
-                    break;
-                }
-                case "updatedetailcount": {
-                    $this->updateDetailCount();
-                    break;
-                }
-                case "getallproduct": {
-                    $this->getAllProduct();
-                    break;
-                }
-                case "getallproductfull": {
-                    $this->getAllProductFull();
-                    break;
-                }
-                case "getproductlist": {
-                    $this->getProductList();
-                    break;
-                }
-                case "getproduct": {
-                    $this->getProduct();
-                    break;
-                }
-                case "updateproduct": {
-                    $this->updateProduct();
-                    break;
-                }
-                case "calculateproductparam": {
-                    $this->calculateProductParam();
-                    break;
-                }
+            $q = $_GET["q"];
+        } else if (isset($_POST["q"])) {
+            $q = $_POST["q"];
+        } else {
+            return;
+        }
+        switch (strtolower($q)) {
+            case "getdetailcategorylist": {
+                $this->getDetailCategoryList();
+                break;
+            }
+            case "getdetailmodellist": {
+                $this->getDetailModelList();
+                break;
+            }
+            case "getmodel": {
+                $this->getModel();
+                break;
+            }
+            case "getproductcategorylist": {
+                $this->getProductCategoryList();
+                break;
+            }
+            case "updatedetailcategorylist": {
+                $this->updateDetailCategoryList();
+                break;
+            }
+            case "updatedetailmodellist": {
+                $this->updateDetailModelList();
+                break;
+            }
+            case "updateproductcategorylist": {
+                $this->updateProductCategoryList();
+                break;
+            }
+            case "getmisc": {
+                $this->getMisc();
+                break;
+            }
+            case "updatemisc": {
+                $this->updateMisc();
+                break;
+            }
+            case "getallmaterial": {
+                $this->getAllMaterial();
+                break;
+            }
+            case "getmateriallist": {
+                $this->getMaterialList();
+                break;
+            }
+            case "getmaterial": {
+                $this->getMaterial();
+                break;
+            }
+            case "updatematerial": {
+                $this->updateMaterial();
+                break;
+            }
+            case "getalldetail": {
+                $this->getAllDetail();
+                break;
+            }
+            case "getdetaillist": {
+                $this->getDetailList();
+                break;
+            }
+            case "getdetail": {
+                $this->getDetail();
+                break;
+            }
+            case "updatedetail": {
+                $this->updateDetail();
+                break;
+            }
+            case "updatedetailcount": {
+                $this->updateDetailCount();
+                break;
+            }
+            case "getallproduct": {
+                $this->getAllProduct();
+                break;
+            }
+            case "getallproductfull": {
+                $this->getAllProductFull();
+                break;
+            }
+            case "getproductlist": {
+                $this->getProductList();
+                break;
+            }
+            case "getproduct": {
+                $this->getProduct();
+                break;
+            }
+            case "updateproduct": {
+                $this->updateProduct();
+                break;
+            }
+            case "calculateproductparam": {
+                $this->calculateProductParam();
+                break;
+            }
+            case "getsimpledetails": {
+                $this->getSimpleDetails();
+                break;
             }
         }
+
 
     }
 
@@ -135,8 +145,21 @@ class Controller
     public function getDetailModelList()
     {
         $this->viewHelper->assign("output_data", $this->model->getDetailModelList(true));
+        $this->viewHelper->display("./list_output.php");
+    }
+
+    public function getSimpleDetails()
+    {
+        $this->viewHelper->assign("output_data", $this->model->getSimpleDetails(true));
         $this->viewHelper->display("./lib/php/pages/simple_detail.php");
     }
+
+    public function getComplexProducts()
+    {
+        $this->viewHelper->assign("output_data", $this->model->getComplexProducts(true));
+        $this->viewHelper->display("./lib/php/pages/complex_detail.php");
+    }
+
     public function getModel()
     {
         if (!isset($_GET["cat"]))
@@ -144,6 +167,7 @@ class Controller
         $this->viewHelper->assign("output_data", $this->model->getModel($_GET["cat"]));
         $this->viewHelper->display("./list_output.php");
     }
+
     public function getProductCategoryList()
     {
         $this->viewHelper->assign("output_data", $this->model->getProductCategoryList());
@@ -178,18 +202,18 @@ class Controller
     {
         $data['dmid'] = -1;
 
-        $params = array('time2m', 'btime', 'amortization2m', 'spending', 'dmarticul', 'dmname', 'dcatalog');
+        $params = array('time2m', 'btime', 'amortization2m', 'spending', 'dmarticul', 'dmname', 'dcatalog', 'base64img');
 
-        if (isset($_GET["dmid"])) {
-            $data['dmid'] = intval($_GET["dmid"]);
+        if (isset($_POST["dmid"])) {
+            $data['dmid'] = intval($_POST["dmid"]);
         }
         foreach ($params as $param) {
-            if (isset($_GET[$param])) {
-                $data[$param] = $_GET[$param];
+            if (isset($_POST[$param])) {
+                $data[$param] = $_POST[$param];
             }
         }
         $this->model->updateDetailModelList($data);
-        $this->viewHelper->assign("output_data", $this->model->getModel($_GET["dcatalog"]));
+        $this->viewHelper->assign("output_data", $this->model->getModel($_POST["dcatalog"]));
         $this->viewHelper->display("./list_output.php");
     }
 
@@ -258,19 +282,22 @@ class Controller
 
     public function updateMaterial()
     {
-        if (count($_GET) < 2)
-            return;
+        /*if (count($_GET) < 2)
+            return;*/
 
         $data['mid'] = -1;
 
-        $params = array('mname', 'marticul', 'price', 'inkconsumption');
+        $params = array('mname', 'marticul', 'price', 'inkconsumption', 'base64img');
 
-        if (isset($_GET["mid"])) {
-            $data['mid'] = intval($_GET["mid"]);
+        if (isset($_POST["mid"])) {
+            $data['mid'] = intval($_POST["mid"]);
         }
         foreach ($params as $param) {
-            if (isset($_GET[$param])) {
-                $data[$param] = $_GET[$param];
+            if (isset($_POST[$param])) {
+                $data[$param] = $_POST[$param];
+            } else {
+                echo "Не задан " . $param;
+                return;
             }
         }
         $this->model->updateMaterial($data);
@@ -376,19 +403,18 @@ class Controller
         $this->model->updateDetail($data);
     }
 
-    public function calculateProductParam($pid = 0, $mid = 0, $coloring = false)
+    public function calculateProductParam()
     {
-        if (!isset($_GET["pid"]) || !isset($_GET["mid"]) || !isset($_GET["type"]))
+        if (!isset($_GET["pid"]) || !isset($_GET["mid"]))
             return;
 
         $pid = $_GET["pid"];
         $mid = $_GET["mid"];
-        $type = $_GET["type"];
 
         /*if ($pid == 0 && $mid == 0)
             return;*/
 
-        $productParam = $this->model->calculateProductParam(intval($pid), intval($mid), $type);
+        $productParam = $this->model->calculateProductParam(intval($pid), intval($mid));
         $this->viewHelper->assign("output_data", $productParam);
         $this->viewHelper->display("./list_output.php");
     }

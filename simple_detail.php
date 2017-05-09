@@ -9,4 +9,4 @@ include_once './lib/php/productModel.php';
 include_once './lib/php/viewHelper.php';
 
 $controller = new Controller();
-$controller->getDetailModelList();
+$controller->getSimpleDetails();

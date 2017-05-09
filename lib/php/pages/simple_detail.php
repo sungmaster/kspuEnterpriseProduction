@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Детали</title>
+    <title>Простые детали</title>
     <link rel="stylesheet" href="css/style.css">
 
     <script src="js/jquery-1.9.1.js"></script>
@@ -17,15 +17,15 @@ include_once("./lib/php/pages/menu.php");
 <div class="container pt-100">
     <header>
         <div class="row">
-            <div class="header-search">
+            <!--<div class="header-search">
                 <form action="#">
                     <input type="text" placeholder="Поиск" />
                     <input type="submit" class="search-submit" value="">
                 </form>
-            </div>
-            <div class="header-button">
+            </div>-->
+            <!--<div class="header-button">
                 <a href="add_simple_detail.php"><input type="submit" class=" btn btn-light-b" value="Добавить деталь"></a>
-            </div>
+            </div>-->
         </div>
     </header>
 
@@ -40,10 +40,10 @@ include_once("./lib/php/pages/menu.php");
                                 <div class=\"product-item\">
                                   <img src=\"".$row["base64img"]."\" alt=\"\">
                                   <div class=\"product-item-content\">
-                                     <a href=\"\">".$row["dmname"]."</a>
-                                     <div class=\"sku\">Артикул: ".$row["dmarticul"]."</div>
-                                     <div class=\"price\" id='".$row["dmid"]."_detail'>
-                                        <script>get_detail_price(".$row["dmid"].", 1)</script> грн.</div>
+                                     <a href=\"\">".$row["gname"]."</a>
+                                     <div class=\"sku\">Артикул: ".$row["garticul"]."</div>
+                                     <div class=\"price\" id='".$row["gid"]."_detail'>
+                                        <script>get_detail_price(".$row["gid"].", 1)</script> грн.</div>
                                    </div>
                                 </div>";
                 }

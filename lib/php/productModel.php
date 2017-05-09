@@ -49,6 +49,32 @@ class ProductModel
 		}
 		return $gres;
 	}
+    public function getSimpleDetails($assoc = false){
+        $result = $this->db->query('select * from grid where details_count = 1') or die($this->db->error);
+
+        $gres = array();
+
+        if ($assoc){
+            while ($row = $result->fetch_assoc()) { $gres[$row['gid']] = $row; }
+        }
+        else{
+            while ($row = $result->fetch_assoc()) { $gres[] = $row; }
+        }
+        return $gres;
+    }
+    public function getComplexProducts($assoc = false){
+        $result = $this->db->query('select * from grid where details_count > 1') or die($this->db->error);
+
+        $gres = array();
+
+        if ($assoc){
+            while ($row = $result->fetch_assoc()) { $gres[$row['gid']] = $row; }
+        }
+        else{
+            while ($row = $result->fetch_assoc()) { $gres[] = $row; }
+        }
+        return $gres;
+    }
     public function getModel($cat, $assoc = false){
 
         $result = $this->db->query('select dmid, dmname from detail_mod where dcatalog = '.$cat) or die($this->db->error);
@@ -91,18 +117,18 @@ class ProductModel
 	public function updateDetailModelList($data){
 		if ($data['dmid']==-1){
 			$this->db->query('INSERT INTO `detail_mod`(`time2m`, `btime`, `amortization2m`, `spending`, `dmarticul`, 
-                `dmname`, `dcatalog`) VALUES ('.floatval($data['time2m']).', '.floatval($data['btime']).', '.
+                `dmname`, `dcatalog`, `base64img`) VALUES ('.floatval($data['time2m']).', '.floatval($data['btime']).', '.
                 floatval($data['amortization2m']).', '.floatval($data['spending']).', "'.
                 $this->db->real_escape_string($data['dmarticul']).'", "'.$this->db->real_escape_string($data['dmname']).
-                '", '.intval($data['dcatalog']).')') or die($this->db->error);
+                '", '.intval($data['dcatalog']).', "' . $data["base64img"] . '")') or die($this->db->error);
 			return $this->db->insert_id;
 		}
 		else{
 			$this->db->query('UPDATE `detail_mod` SET `time2m`='.floatval($data['time2m']).',`btime`='.floatval($data['btime']).
                 ',`amortization2m`='.floatval($data['amortization2m']).',`spending`='.floatval($data['spending']).
                 ',`dmarticul`="'.$this->db->real_escape_string($data['dmarticul']).'",`dmname`="'.
-                $this->db->real_escape_string($data['dmname']).'",`dcatalog`='.intval($data['dcatalog']).
-                ' WHERE `dmid` ='.intval($data['dmid']) ) or die($this->db->error);
+                $this->db->real_escape_string($data['dmname']).'",`dcatalog`='.intval($data['dcatalog']).', base64img = "'
+                . $data["base64img"] . '" WHERE `dmid` ='.intval($data['dmid']) ) or die($this->db->error);
 
 			return 0;
 		}
@@ -186,27 +212,30 @@ class ProductModel
 	}
 	public function getMaterial($mid){
 		$result = $this->db->query('select * from material where mid = '.intval($mid));
-		return array($result->fetch_assoc());
+		return $result->fetch_assoc();
 	}
 	public function updateMaterial($data){
 		if ($data['mid']==-1){
-			$this->db->query('INSERT INTO `material`(`mname`, `marticul`, `price`, `inkconsumption`) VALUES ("'.
+		    $query = 'INSERT INTO `material`(`mname`, `marticul`, `price`, `inkconsumption`, `base64img`) VALUES ("'.
                 $this->db->real_escape_string($data['mname']).'", "'.$this->db->real_escape_string($data['marticul']).
-                '", '.floatval($data['price']).', '.floatval($data['inkconsumption']).')') or die($this->db->error);
+                '", '.floatval($data['price']).', '.floatval($data['inkconsumption']).', "' . $data["base64img"] . '")';
+			echo $query."<br>";
+		    $this->db->query($query) or die($this->db->error);
 			return $this->db->insert_id;
 		}
 		else{
-			$this->db->query( 'UPDATE `material` SET `mname`="'.$this->db->real_escape_string($data['mname']).
+            $query = 'UPDATE `material` SET `mname`="'.$this->db->real_escape_string($data['mname']).
                 '",`marticul`="'.$this->db->real_escape_string($data['marticul']).'",`price`='.
                 floatval($data['price']).',`inkconsumption`='.floatval($data['inkconsumption']).
-                ' WHERE `mid`='.intval($data['mid']) ) or die($this->db->error);
+                ', base64img = "' . $data["base64img"] . '" WHERE `mid`='.intval($data['mid']);
+			$this->db->query($query) or die($this->db->error);
 			return 0;
 		}
 	}
 
 	//details
 	public function getAllDetail($assoc = false){
-		$result = $this->db->query('select did, material.mname, detail.dlength, detail.count from detail, material 
+		$result = $this->db->query('select detail.*, material.mname from detail, material 
                       WHERE detail.material = material.mid') or die($this->db->error);
 
 		$gres = array("details");
@@ -262,7 +291,7 @@ class ProductModel
 
 	//production
 	public function getAllProduct($assoc = false){
-		$result = $this->db->query('select gid, details, gpoints, gamortization from grid where gid > 0')
+		$result = $this->db->query('select gid, details, gpoints, gamortization from grid')
             or die($this->db->error);
 
 		$gres = array();
@@ -302,12 +331,12 @@ class ProductModel
 		}
 		return $gres;
 	}
-	public function getProduct($pid, $type){
+	public function getProduct($pid, $type = ""){
 	    if ($type == "simple")
             $result = $this->db->query('select * from detail_mod where dmid = '.intval($pid)) or die($this->db->error);
         else
 	        $result = $this->db->query('select * from grid where gid = '.intval($pid)) or die($this->db->error);
-		return array($result->fetch_assoc());
+		return $result->fetch_assoc();
 	}
 	public function updateProduct($data){
 		if ($data['gid']==-1){
@@ -331,7 +360,7 @@ class ProductModel
 			return 0;
 		}
 	}
-	public function calculateProductParam($pid, $mid, $type, $coloring = false, $count = 1){
+	public function calculateProductParam($pid, $mid, $coloring = false, $count = 1){
 		$productParam = array('time' => 0, 'price' => 0);
 
 		$misc = $this->getMisc(true);
@@ -339,10 +368,8 @@ class ProductModel
 		$modelList = $this->getDetailModelList(true);
 		$material = $this->getMaterial($mid);
 
-		$productInfo = $this->getProduct($pid, $type);
-		if ($type = "simple")
-            $details = json_decode("[[".$productInfo["dmid"].", ".$productInfo["dmid"]."]]");
-		$details = json_decode($productInfo[0]['details']);
+		$productInfo = $this->getProduct($pid);
+		$details = json_decode($productInfo['details']);
 
 		$detailInfo = array();
 
