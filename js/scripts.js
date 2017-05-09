@@ -154,9 +154,9 @@ function add_record(rus_params, ids_params, add_function) {
     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            if (xmlhttp.responseText.indexOf("error") != -1 || xmlhttp.responseText.indexOf("otice") != -1) {
+            /*if (xmlhttp.responseText.indexOf("error") != -1 || xmlhttp.responseText.indexOf("otice") != -1) {
                 alert(xmlhttp.responseText);
-            }
+            }*/
             switch(add_function) {
                 case "updateDetailModelList": {
                     alert("Деталь добавлена!");
