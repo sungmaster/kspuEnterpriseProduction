@@ -27,6 +27,7 @@
         <img src="img/index_com.jpg" alt="">
         <a href="complex_detail.php">Перейти в раздел</a>
     </div>
-    <div style="width: 100%;text-align: center;margin: 40px auto 10px;"><a href="calc.php" style="background: #000;color: #fff;padding: 10px;border-radius: 15px;">Расчет новой сложной детали</a></div>
+    <!--<div style="width: 100%;text-align: center;margin: 40px auto 10px;">
+        <a href="calc.php" style="background: #000;color: #fff;padding: 10px;border-radius: 15px;">Рсчет новой сложной детали</a></div>-->
 </body>
 </html>

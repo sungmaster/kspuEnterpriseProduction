@@ -344,7 +344,7 @@ ul.slvl li a{
     background: #000;
     color: #fff;
     padding: 20px 0;
-    border-radius: 25%;
+    border-radius: 25px;
     display: none;
 }
 .category-item:hover a{
@@ -365,6 +365,7 @@ ul.slvl li a{
     width: 30%;
 }
 .container_sku{
+    //text-align: -webkit-center;
     float: left;
     width: 45%;
     /*margin-right: 10%;*/
@@ -412,4 +413,34 @@ ul.slvl li a{
 
 .catalog {
     cursor: pointer;
+}
+
+/*calc.php*/
+
+#mat_table {
+    border-collapse: collapse;
+    width: 95%;
+    margin: 5px;
+}
+#mat_table tr:hover {
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+#mat_table td {
+    text-align: center;
+    border-bottom: 1px solid #bebdff;
+}
+#main_tr_calc {
+    background-color: #cccccc;
+}
+#g_img {
+}
+#calc_time_price {
+    position: absolute;
+    top: 163px;
+    left: 650px;
+    text-align: center;
+}
+input[type="text"] {
+    text-align: center;
 }

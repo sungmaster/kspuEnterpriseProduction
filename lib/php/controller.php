@@ -259,10 +259,15 @@ class Controller
         $this->model->updateMisc($data);
     }
 
-    public function getAllMaterial()
+    public function getAllMaterial($calc = "")
     {
         $this->viewHelper->assign("output_data", $this->model->getAllMaterial(true));
-        $this->viewHelper->display("./lib/php/pages/material.php");
+
+        if ($calc != "") {
+            $this->viewHelper->display("./lib/php/pages/calc.php");
+        }
+        else
+            $this->viewHelper->display("./lib/php/pages/material.php");
     }
 
     public function getMaterialList()

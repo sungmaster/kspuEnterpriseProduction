@@ -1,32 +1,16 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<?php
-include_once("./lib/php/pages/menu.php");
+﻿<?php
+//declare(strict_types = 1);
+
+$kspuEnterprise = 1;
+
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
+
+include_once './lib/php/controller.php';
+include_once './lib/php/productModel.php';
+include_once './lib/php/viewHelper.php';
+
+$controller = new Controller();
+$controller->getAllMaterial("calc");
+
 ?>
-
-<div class="container pt-100">
-    <h1>Расчет сложной детали</h1>
-
-    <div class="container_sku">
-        <input id="calc_sum" type="text" class="" placeholder="Стоимость">
-        <input id="calc_time" type="text" class="" placeholder="Временные затраты">
-
-        <br>
-        <div id="det_cat" class="categorys-list">
-            <ul>
-                <li><a href="#">category 1</a></li>
-            </ul>
-        </div>
-        <a id="del_new_cat" href="#" style="width: 418px;">Добавить категорию</a>
-
-        <a href="#" onclick="history.back(); return false;">Назад</a>
-        <input type="submit" value="Зберегти">
-    </div>
-</body>
-</html>

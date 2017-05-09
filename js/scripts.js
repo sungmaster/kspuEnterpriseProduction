@@ -6,13 +6,19 @@
         return false;
     });
 });
-function get_detail_price_time(pid, mid) {
+function get_detail_price_time(pid, mid, calc) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            $("#"+pid+"_price").html(xmlhttp.responseText.split("&")[0] + " грн.");
-            $("#"+pid+"_time").html(xmlhttp.responseText.split("&")[1] + " хв.");
+            if (calc == 0) {
+                $("#" + pid + "_price").html(xmlhttp.responseText.split("&")[0] + " грн.");
+                $("#" + pid + "_time").html(xmlhttp.responseText.split("&")[1] + " хв.");
+            }
+            else {
+                $("#tprice").val(xmlhttp.responseText.split("&")[0] + " грн.");
+                $("#ttime").val(xmlhttp.responseText.split("&")[1] + " хв.");
+            }
         }
     };
     xmlhttp.open("GET", "lib/php/pages/xmlhttp.php?pid="+pid+"&mid="+mid+"&q=calculateProductParam", true);
@@ -120,13 +126,32 @@ function add_record(rus_params, ids_params, add_function) {
 
     xmlhttp.send(pars);
 }
-$(".dModel").on("click", function (e) {
-    $(".dModel").css("backgroundColor", "#fff");
-    e.target.style.backgroundColor = "#bbbbbb";
+$(".mat_table_tr").on("click", function (e) {
+    var td = e.target;
+
+    while (td.previousSibling) {
+        td = td.previousSibling;
+    }
+    var id = td.nextSibling.innerHTML;
+    var gid = location.href.substring(location.href.indexOf("id=")+3, location.href.indexOf("&") != -1 ? location.href.indexOf("&") : location.href.length);
+
+    get_detail_price_time(gid, id, 1);
 });
 
 
+function get_img() {
+    var xmlhttp = new XMLHttpRequest();
 
+    xmlhttp.open("GET", "lib/php/pages/xmlhttp.php?q=getProduct&pid="+location.href.split("?")[1].split("&")[0].split("=")[1], true);
+    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            $("#gname").val(xmlhttp.responseText.split("&")[6]);
+            $("#g_img").attr("src", xmlhttp.responseText.split("&")[10]);
+        }
+    };
+    xmlhttp.send();
+}
 
 
 

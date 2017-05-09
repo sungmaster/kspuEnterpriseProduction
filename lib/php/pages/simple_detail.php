@@ -40,10 +40,11 @@ include_once("./lib/php/pages/menu.php");
                                 <div class=\"product-item\">
                                   <img src=\"".$row["base64img"]."\" alt=\"\">
                                   <div class=\"product-item-content\">
-                                     <a href=\"\">".$row["gname"]."</a>
+                                     <a href=\"calc.php?id=".$row["gid"]."\">".$row["gname"]."</a>
                                      <div class=\"sku\">Артикул: ".$row["garticul"]."</div>
-                                     <div class=\"price\" id='".$row["gid"]."_detail'>
-                                        <script>get_detail_price(".$row["gid"].", 1)</script> грн.</div>
+                                     <div class=\"price\" id='".$row["gid"]."_price'></div>
+                                     <div class=\"time\" id='".$row["gid"]."_time'></div>
+                                     <script>get_detail_price_time(".$row["gid"].", 1, 0)</script>
                                    </div>
                                 </div>";
                 }
