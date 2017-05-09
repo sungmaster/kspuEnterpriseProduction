@@ -5,6 +5,7 @@
     <title>Сложные детали</title>
     <link rel="stylesheet" href="css/style.css">
 
+    <link rel="shortcut icon" href="/img/icon.png" type="image/png">
     <script src="js/jquery-1.9.1.js"></script>
     <script src="js/scripts.js"></script>
 

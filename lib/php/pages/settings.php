@@ -5,6 +5,7 @@
     <title>Настройки</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-1.9.1.js"></script>
+    <link rel="shortcut icon" href="/img/icon.png" type="image/png">
 </head>
 <body>
 <?php

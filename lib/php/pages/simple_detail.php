@@ -7,6 +7,7 @@
 
     <script src="js/jquery-1.9.1.js"></script>
     <script src="js/scripts.js"></script>
+    <link rel="shortcut icon" href="/img/icon.png" type="image/png">
 
 </head>
 <body>
