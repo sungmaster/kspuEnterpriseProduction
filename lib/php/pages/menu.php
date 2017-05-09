@@ -3,7 +3,7 @@ $html = "<div class=\"container menu_main\">
     <div class=\"row \">
         <ul>
             
-            <li><a href=\"index.php\">Главная</a></li>
+            
             <li><a href=\"material.php\">Материалы</a>
                 <ul class=\"slvl\">
                     <li><a href=\"add_material.php\">Добавить материал</a></li>
