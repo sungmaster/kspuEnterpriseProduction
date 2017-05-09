@@ -184,7 +184,7 @@ input[type=text].btn.btn-light-b{
     text-align: right;
     margin-top: 40px;
 }
-.price{
+.price, .time{
     width: 50%;
     margin: 5px auto;
     text-align: right;

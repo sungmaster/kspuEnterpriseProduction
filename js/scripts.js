@@ -6,12 +6,13 @@
         return false;
     });
 });
-function get_detail_price(pid, mid) {
+function get_detail_price_time(pid, mid) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            $("#"+pid+"_detail").html(xmlhttp.responseText.split("&")[0] + " грн.");
+            $("#"+pid+"_price").html(xmlhttp.responseText.split("&")[0] + " грн.");
+            $("#"+pid+"_time").html(xmlhttp.responseText.split("&")[1] + " хв.");
         }
     };
     xmlhttp.open("GET", "lib/php/pages/xmlhttp.php?pid="+pid+"&mid="+mid+"&q=calculateProductParam", true);
