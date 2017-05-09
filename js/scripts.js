@@ -17,7 +17,7 @@ function get_detail_price_time(pid, mid, calc) {
             }
             else {
                 $("#tprice").val(xmlhttp.responseText.split("&")[0] + " грн.");
-                $("#ttime").val(xmlhttp.responseText.split("&")[1] + " хв.");
+                $("#ttime").val(norm_time(parseInt(xmlhttp.responseText.split("&")[1])));
             }
         }
     };
