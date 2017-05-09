@@ -311,7 +311,7 @@ class Controller
     public function getAllDetail()
     {
         $this->viewHelper->assign("output_data", $this->model->getAllDetail());
-        $this->viewHelper->display("./list_output.php");
+        $this->viewHelper->display("./lib/php/pages/stock.php");
     }
 
     public function getDetailList()

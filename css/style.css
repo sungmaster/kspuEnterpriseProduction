@@ -477,3 +477,20 @@ input[type="text"] {
 .mod_num {
     width: 50px;
 }
+#main_tr_stock {
+    background-color: #d3d3d3;
+}
+#stock_table tr:nth-child(2n) {
+    background-color: #ededed;
+}
+#stock_table tr:hover {
+    background-color: #d3d3d3;
+}
+#stock_table {
+    border-collapse: collapse;
+    width: 100%;
+}
+#stock_table td {
+    padding: 8px;
+    text-align: center;
+}

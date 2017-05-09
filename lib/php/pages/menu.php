@@ -9,6 +9,11 @@ $html = "<div class=\"container menu_main\">
                     <li><a href=\"add_material.php\">Добавить материал</a></li>
                 </ul>
             </li>
+            <li><a href=\"stock.php\">Детали на складе</a>
+                <!--<ul class=\"slvl\">
+                    <li><a href=\"add_stock.php\">Добавить модель детали</a></li>
+                </ul>-->
+            </li>
             <li><a href=\"simple_detail.php\">Простые детали</a>
                 <ul class=\"slvl\">
                     <li><a href=\"add_simple_detail.php\">Добавить модель детали</a></li>
