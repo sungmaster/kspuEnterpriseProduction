@@ -339,12 +339,15 @@ class ProductModel
 	}
 	public function updateProduct($data){
 		if ($data['gid']==-1){
-			$this->db->query('INSERT INTO `grid`(`details`, `width`, `height`, `garticul`, `gname`, `gpoints`, 
-                `gamortization`, `gcatalog`) VALUES ("'.$this->db->real_escape_string($data['details']).
-                '",'.intval($data['width']).','.intval($data['height']).',"'.
+		    $query = "INSERT INTO `grid`(details_count, details, width, height, garticul, gname, gpoints,
+            gamortization, gcatalog, base64img) VALUES (".$data["details_count"].", '".
+                $this->db->real_escape_string($data['details']).
+                '\','.intval($data['width']).','.intval($data['height']).',"'.
                 $this->db->real_escape_string($data['garticul']).'","'.$this->db->real_escape_string($data['gname']).
-                '",'.intval($data['gpoints']).','.floatval($data['gamortization']).','.intval($data['gcatalog']).')')
-                or die($this->db->error);
+                '",'.intval($data['gpoints']).','.floatval($data['gamortization']).','.intval($data['gcatalog']).', "'.
+                $data["base64img"].'")';
+		    echo $query;
+			$this->db->query($query) or die($this->db->error);
 			//$this->calculateProductParam($this->db->insert_id);
 			return $this->db->insert_id;
 		}

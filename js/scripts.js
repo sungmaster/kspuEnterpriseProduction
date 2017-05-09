@@ -12,8 +12,8 @@ function get_detail_price_time(pid, mid, calc) {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             if (calc == 0) {
-                $("#" + pid + "_price").html(xmlhttp.responseText.split("&")[0] + " грн.");
-                $("#" + pid + "_time").html(xmlhttp.responseText.split("&")[1] + " хв.");
+                $("#" + pid + "_price").html(Math.floor(parseFloat(xmlhttp.responseText.split("&")[0]) * 100) / 100);
+                $("#" + pid + "_time").html(norm_time(parseInt(xmlhttp.responseText.split("&")[1])));
             }
             else {
                 $("#tprice").val(xmlhttp.responseText.split("&")[0] + " грн.");
@@ -23,6 +23,17 @@ function get_detail_price_time(pid, mid, calc) {
     };
     xmlhttp.open("GET", "lib/php/pages/xmlhttp.php?pid="+pid+"&mid="+mid+"&q=calculateProductParam", true);
     xmlhttp.send();
+}
+function norm_time(time) {
+    if (time < 60) {
+        return time + " мин.";
+    }
+    else {
+        var h = parseInt(time / 60);
+        var m = time - h * 60;
+        return h + " ч. " + m + " мин.";
+
+    }
 }
 function base64(f, callback){
     var coolFile = {};
@@ -78,6 +89,50 @@ $("#sim_det_submit").click(function () {
         "base64img": "#base64img"};
     add_record(rus, ids, "updateDetailModelList");
 });
+$("#s_d_submit").on("click", function () {
+    if (count_gpoints() == 0 || $("#gpoints").val() == "") {
+        alert("Вы не выбрали ни одной детали!");
+        return;
+    }
+    var rus = {
+        "details_count": "Количество деталей",
+        "details": "Детали",
+        "width": "Ширина",
+        "height": "Высота",
+        "garticul": "Артикул",
+        "gname": "Название",
+        "gpoints": "Количество точек сварки",
+        "gamortization": "Дополнительные затраты",
+        "gcatalog": "Каталог",
+        "base64img": "Фото"};
+    var ids = {
+        "details_count": "#details_count",
+        "details": "#details",
+        "width": "#width",
+        "height": "#height",
+        "garticul": "#garticul",
+        "gname": "#gname",
+        "gpoints": "#gpoints",
+        "gamortization": "#gamortization",
+        "gcatalog": "#gcatalog",
+        "base64img": "#base64img"};
+
+    var details = "[";
+    var checked = $("input[type='checkbox']:checked");
+    var len = parseInt($("#"+parseInt(checked[0].id)+"_len").val()) / 1000;
+    var num = $("#"+parseInt(checked[0].id)+"_num").val();
+    details += "["+parseInt(checked[0].id)+","+len+","+num+"]";
+    for (var i = 1; i < checked.length; i++) {
+        len = parseInt($("#"+parseInt(checked[i].id)+"_len").val()) / 1000;
+        num = $("#"+parseInt(checked[i].id)+"_num").val();
+        details += ",["+parseInt(checked[i].id)+","+len+","+num+"]";
+    }
+    details += "]";
+    $("#details").val(details);
+    $("#details_count").val(checked.length);
+    $("#gcatalog").val(count_gpoints() > 1 ? 4 : 3);
+    add_record(rus, ids, "updateProduct");
+});
 function add_record(rus_params, ids_params, add_function) {
     var params = {};
     for (var par in ids_params) {
@@ -96,10 +151,10 @@ function add_record(rus_params, ids_params, add_function) {
     var xmlhttp = new XMLHttpRequest();
 
     xmlhttp.open("POST", "lib/php/pages/xmlhttp.php", true);
-    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            if (xmlhttp.responseText.indexOf("error") != -1) {
+            if (xmlhttp.responseText.indexOf("error") != -1 || xmlhttp.responseText.indexOf("otice") != -1) {
                 alert(xmlhttp.responseText);
             }
             switch(add_function) {
@@ -109,6 +164,10 @@ function add_record(rus_params, ids_params, add_function) {
                 }
                 case "updateMaterial": {
                     alert("Материал добавлен!");
+                    break;
+                }
+                case "updateProduct": {
+                    alert("Продукт добавлен!");
                     break;
                 }
                 default: {
@@ -172,8 +231,25 @@ $("#save").click(function () {
     };
     xmlhttp.send();
 });
+$("input[type='checkbox']").on("click", function (e) {
+    count_gpoints();
+});
+$(".mod_num").on("click", function () {
+    count_gpoints();
+}).on("change", function () {
+    count_gpoints();
+});
 
+function count_gpoints() {
+    var checked = $("input[type='checkbox']:checked");
+    var sum = 0;
 
+    for (var i = 0; i < checked.length; i++) {
+        sum += parseInt($("#" + parseInt(checked[i].id) + "_num").val());
+    }
+    $("#gpoints").val(sum);
+    return sum;
+}
 
 
 

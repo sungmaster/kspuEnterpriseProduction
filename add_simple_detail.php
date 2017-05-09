@@ -11,6 +11,6 @@ include_once './lib/php/productModel.php';
 include_once './lib/php/viewHelper.php';
 
 $controller = new Controller();
-$controller->getDetailCategoryList("add_s_d");
+$controller->getDetailCategoryList();
 
 ?>

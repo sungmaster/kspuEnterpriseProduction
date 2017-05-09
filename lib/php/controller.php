@@ -145,7 +145,7 @@ class Controller
     public function getDetailModelList()
     {
         $this->viewHelper->assign("output_data", $this->model->getDetailModelList(true));
-        $this->viewHelper->display("./list_output.php");
+        $this->viewHelper->display("./lib/php/pages/add_c_d.php");
     }
 
     public function getSimpleDetails()
@@ -389,23 +389,23 @@ class Controller
 
     public function updateProduct()
     {
-        if (count($_GET) < 2)
+        if (count($_POST) < 2)
             return;
 
         $data['gid'] = -1;
 
-        $params = array('details', 'width', 'height', 'garticul', 'gname', 'gpoints',
-            'gamortization', 'gcatalog');
+        $params = array('details_count', 'details', 'width', 'height', 'garticul', 'gname', 'gpoints',
+            'gamortization', 'gcatalog', 'base64img');
 
-        if (isset($_GET["gid"])) {
-            $data['gid'] = intval($_GET["gid"]);
+        if (isset($_POST["gid"])) {
+            $data['gid'] = intval($_POST["gid"]);
         }
         foreach ($params as $param) {
-            if (isset($_GET[$param])) {
-                $data[$param] = $_GET[$param];
+            if (isset($_POST[$param])) {
+                $data[$param] = $_POST[$param];
             }
         }
-        $this->model->updateDetail($data);
+        $this->model->updateProduct($data);
     }
 
     public function calculateProductParam()
