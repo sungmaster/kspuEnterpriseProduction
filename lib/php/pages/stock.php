@@ -16,9 +16,13 @@ include_once("./lib/php/pages/menu.php");
     echo "<table id='stock_table'><tr id='main_tr_stock'><td>ID</td><td>Длина</td><td>Материал</td><td>Артикул</td><td>Модель</td><td>Количество</td></tr>";
     foreach($output_data as $row) {
         echo "<tr>";
-        foreach($row as $field) {
-            echo "<td>$field</td>";
-        }
+        echo "
+            <td>".$row["did"]."</td>
+            <td>".$row["dlength"]."</td>
+            <td>".$row["mname"]."</td>
+            <td>".$row["darticul"]."</td>
+            <td>".$row["dmname"]."</td>
+            <td>".$row["count"]."</td>";
         echo "</tr>";
     }
     echo "</table>";

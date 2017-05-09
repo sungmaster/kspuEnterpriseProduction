@@ -235,7 +235,7 @@ class ProductModel
 
 	//details
 	public function getAllDetail($assoc = false){
-		$result = $this->db->query('select did, dlength, mname, darticul, dmname, count from detail 
+		$result = $this->db->query('select detail.*, mname, dmname from detail 
             INNER JOIN material ON material.mid = detail.material INNER JOIN detail_mod ON dmid = dmodel') or die($this->db->error);
 
 		$gres = array();
