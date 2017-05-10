@@ -495,3 +495,10 @@ input[type="text"] {
     padding: 8px;
     text-align: center;
 }
+
+.stock-new > *{
+    width: 17vw;
+}
+#ssave{
+    margin-top: 20px;
+}

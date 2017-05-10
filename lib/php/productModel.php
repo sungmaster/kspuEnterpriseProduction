@@ -267,7 +267,25 @@ class ProductModel
 		return array($result->fetch_assoc());
 	}
 	public function updateDetail($data){
-		if ($data['did']==-1){
+		$count = intval($data['count']);
+		$result = $this->db->query('SELECT * FROM `detail` WHERE dmodel = '.intval($data['dmodel']).' AND material = '.intval($data['material']).' AND dlength = '.floatval($data['dlength']));
+		if (mysqli_num_rows($result) == 0){
+			if ($count<0){$count = 0;}
+			$this->db->query('INSERT INTO `detail`(`dlength`, `material`, `darticul`, `dmodel`, `count`) VALUES ('.
+                floatval($data['dlength']).','.intval($data['material']).',"'.
+                $this->db->real_escape_string($data['darticul']).'",'.intval($data['dmodel']).','.
+                intval($count).')') or die($this->db->error);
+			return $this->db->insert_id;
+		}
+		else{
+			$res = $result->fetch_assoc();
+			$count += $res['count'];
+			if ($count<0){$count = 0;}
+			$this->db->query( 'UPDATE `detail` SET `count`='.intval($count).' WHERE dmodel = '.intval($data['dmodel']).' AND material = '.intval($data['material']).' AND dlength = '.floatval($data['dlength']) ) or die($this->db->error);
+			
+			return 0;
+		}
+		/*if ($data['did']==-1){
 			$this->db->query('INSERT INTO `detail`(`dlength`, `material`, `darticul`, `dmodel`, `count`) VALUES ('.
                 floatval($data['dlength']).','.intval($data['material']).',"'.
                 $this->db->real_escape_string($data['darticul']).'",'.intval($data['dmodel']).','.
@@ -281,7 +299,7 @@ class ProductModel
                 intval($data['did']) ) or die($this->db->error);
 			
 			return 0;
-		}
+		}*/
 	}
 	public function updateDetailCount($data){
 		$this->db->query('UPDATE `detail` SET `count`='.intval($data['count']).

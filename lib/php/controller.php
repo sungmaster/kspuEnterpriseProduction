@@ -1,12 +1,20 @@
 <?php
 
 //declare(strict_types = 1);
+$q = "";
+if (isset($_GET["q"])) {
+    $q = $_GET["q"];
+} else if (isset($_POST["q"])) {
+    $q = $_POST["q"];
+}
+if ($q == 'updatedetail'){$kspuEnterprise = 1;}
 
 if (!isset($kspuEnterprise)) {
     echo "controller";
     die();
 }
-
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 
 class Controller
 {
@@ -96,6 +104,7 @@ class Controller
                 break;
             }
             case "updatedetail": {
+                echo "updatedetail";
                 $this->updateDetail();
                 break;
             }
@@ -311,8 +320,12 @@ class Controller
     public function getAllDetail()
     {
         $this->viewHelper->assign("output_data", $this->model->getAllDetail());
+        $this->viewHelper->assign("models", $this->model->getDetailModelList());
+        $this->viewHelper->assign("materials", $this->model->getAllMaterial());
         $this->viewHelper->display("./lib/php/pages/stock.php");
     }
+
+
 
     public function getDetailList()
     {
@@ -339,20 +352,24 @@ class Controller
 
         $data['did'] = -1;
 
-        $params = array('dlength', 'material', 'darticul', 'dmodel', 'count');
+        $params = array('dlength' => 1, 'material' => 1, 'darticul' => "", 'dmodel' => 1, 'count' => 1);
 
         if (isset($_GET["did"])) {
             $data['did'] = intval($_GET["did"]);
         }
-        foreach ($params as $param) {
-            if (isset($_GET[$param])) {
-                $data[$param] = $_GET[$param];
+        foreach ($params as $key => $param) {
+            if (isset($_GET[$key])) {
+                $params[$key] = $_GET[$key];
             }
         }
         //print_r($data);
-        $this->model->updateDetail($data);
-        $this->viewHelper->assign("output_data", $this->model->getDetailList(intval($_GET["dmodel"])));
-        $this->viewHelper->display("./list_output.php");
+        echo $this->model->updateDetail($params);
+        if (isset($_GET['redirect'])){
+            header('Location: /stock.php', true, 303);
+            die();
+        }
+        //$this->viewHelper->assign("output_data", $this->model->getDetailList(intval($_GET["dmodel"])));
+        //$this->viewHelper->display("./list_output.php");
     }
 
     public function updateDetailCount()
@@ -424,4 +441,11 @@ class Controller
         $this->viewHelper->display("./list_output.php");
     }
 
+}
+
+if ($q == 'updatedetail'){
+    include_once './productModel.php';
+    include_once './viewHelper.php';
+    $controller = new Controller();
+    $controller->handle();
 }
