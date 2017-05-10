@@ -59,7 +59,7 @@ include_once("./lib/php/pages/menu.php");
                 oReq.onload = function(){
                     location.reload();
                 };
-                oReq.open("get", "./lib/php/controller.php?q=updatedetail&dlength="+c+"&material="+b+"&dmodel="+a+"&count="+d, true);
+                oReq.open("get", "./lib/php/pages/xmlhttp.php?q=updatedetail&dlength="+c+"&material="+b+"&dmodel="+a+"&count="+d, true);
                 oReq.send();
             }
 

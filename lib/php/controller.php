@@ -1,13 +1,6 @@
 <?php
 
 //declare(strict_types = 1);
-$q = "";
-if (isset($_GET["q"])) {
-    $q = $_GET["q"];
-} else if (isset($_POST["q"])) {
-    $q = $_POST["q"];
-}
-if ($q == 'updatedetail'){$kspuEnterprise = 1;}
 
 if (!isset($kspuEnterprise)) {
     echo "controller";
@@ -441,11 +434,4 @@ class Controller
         $this->viewHelper->display("./list_output.php");
     }
 
-}
-
-if ($q == 'updatedetail'){
-    include_once './productModel.php';
-    include_once './viewHelper.php';
-    $controller = new Controller();
-    $controller->handle();
 }
