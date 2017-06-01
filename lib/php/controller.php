@@ -204,7 +204,7 @@ class Controller
     {
         $data['dmid'] = -1;
 
-        $params = array('time2m', 'btime', 'amortization2m', 'spending', 'dmarticul', 'dmname', 'dcatalog', 'base64img');
+        $params = array('time2m', 'btime', 'amortization2m', 'dlength', 'spending', 'dmarticul', 'dmname', 'dcatalog', 'base64img');
 
         if (isset($_POST["dmid"])) {
             $data['dmid'] = intval($_POST["dmid"]);
@@ -345,7 +345,7 @@ class Controller
 
         $data['did'] = -1;
 
-        $params = array('dlength' => 1, 'material' => 1, 'darticul' => "", 'dmodel' => 1, 'count' => 1);
+        $params = array('material' => 1, 'darticul' => "", 'dmodel' => 1, 'count' => 1);
 
         if (isset($_GET["did"])) {
             $data['did'] = intval($_GET["did"]);

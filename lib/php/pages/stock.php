@@ -13,13 +13,12 @@ include_once("./lib/php/pages/menu.php");
 ?>
 <div class="container pt-100 center">
     <?php
-    echo "<table id='stock_table'><tr id='main_tr_stock'><td>Модель</td><td>Материал</td><td>Длина</td><td>Количество</td></tr>";
+    echo "<table id='stock_table'><tr id='main_tr_stock'><td>Артикул</td><td>Материал</td><td>Количество</td></tr>";
     foreach($output_data as $row) {
         echo "<tr>";
         echo "
-            <td>".$row["dmname"]."</td>
+            <td>".$row["dmarticul"]."</td>
             <td>".$row["mname"]."</td>
-            <td>".$row["dlength"]."</td>
             <td>".$row["count"]."</td>";
         echo "</tr>";
     }
@@ -30,19 +29,24 @@ include_once("./lib/php/pages/menu.php");
 </div>
 <div class="container pt-100 center">
     <div class="misc stock-new">
-        <select id="smodel">
+        <input id="smodel" list="model-list">
+        <!--<select id="smodel">-->
+        <datalist id="model-list">
         <?php
         foreach($models as $row) {
-            echo '<option value="'.$row['dmid'].'">'.$row['dmname'].'</option>';
+            echo '<option value="'.$row['dmid'].'">'.$row['dmarticul'].'</option>';
         }?>
-        </select>
-        <select id="smaterial">
+        </datalist>
+        <!--</select>-->
+        <input id="smaterial" list="material-list">
+        <!--<select id="smaterial">-->
+        <datalist id="material-list">
         <?php
         foreach($materials as $row) {
             echo '<option value="'.$row['mid'].'">'.$row['mname'].'</option>';
         }?>
-        </select>
-        <input type="number" step="0.01" min="0" placeholder="Длина" id="dlen">
+        </datalist>
+        <!--</select>-->
         <input type="number" step="1" placeholder="Количество" id="dcount">
         <input id="ssave" type="button" value="Сохранить">
     </div>
@@ -52,21 +56,21 @@ include_once("./lib/php/pages/menu.php");
         $("#ssave").click(function(){
             var a = $("#smodel").val();
             var b = $("#smaterial").val();
-            var c = parseFloat($("#dlen").val()).toFixed(2);
+            //var c = parseFloat($("#dlen").val()).toFixed(2);
             var d = parseInt($("#dcount").val());
-            if (c > 0 && d != 0){
+            if (d != 0){
                 var oReq = new XMLHttpRequest();
                 oReq.onload = function(){
                     if (d > 0)
-                        alert("Деталь \""+$("#smodel > option[value='"+a+"']").html()+"\" ("+
-                            $("#smaterial > option[value='"+b+"']").html()+" - "+c+" м. - "+Math.abs(d)+" шт.) добавлена на склад");
+                        alert("Деталь \""+$("#model-list > option[value='"+a+"']").html()+"\" ("+
+                            $("#material-list > option[value='"+b+"']").html()+" - "+Math.abs(d)+" шт.) добавлена на склад");
                     else {
-                        alert("Деталь \""+$("#smodel > option[value='"+a+"']").html()+"\" ("+
-                        $("#smaterial > option[value='"+b+"']").html()+" - "+c+" м. - "+Math.abs(d)+" шт.) списана со склада");
+                        alert("Деталь \""+$("#model-list > option[value='"+a+"']").html()+"\" ("+
+                        $("#material-list > option[value='"+b+"']").html()+" - "+Math.abs(d)+" шт.) списана со склада");
                     }
                     location.reload();
                 };
-                oReq.open("get", "./lib/php/pages/xmlhttp.php?q=updatedetail&dlength="+c+"&material="+b+"&dmodel="+a+"&count="+d, true);
+                oReq.open("get", "./lib/php/pages/xmlhttp.php?q=updatedetail&material="+b+"&dmodel="+a+"&count="+d, true);
                 oReq.send();
             }
 

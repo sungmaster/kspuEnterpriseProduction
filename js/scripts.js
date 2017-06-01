@@ -73,6 +73,7 @@ $("#sim_det_submit").click(function () {
         "time2m": "Время работы на 1м",
         "btime": "Дополнительные затраты времени",
         "amortization2m": "Затраты на 1м",
+        "dlength": "Длина",
         "spending": "Дополнительные затраты",
         "dmarticul": "Артикул",
         "dmname": "Название",
@@ -82,6 +83,7 @@ $("#sim_det_submit").click(function () {
         "time2m": "#time2m",
         "btime": "#btime",
         "amortization2m": "#amortization2m",
+        "dlength": "#dlength",
         "spending": "#spending",
         "dmarticul": "#dmarticul",
         "dmname": "#dmname",
@@ -119,11 +121,11 @@ $("#s_d_submit").on("click", function () {
 
     var details = "[";
     var checked = $("input[type='checkbox']:checked");
-    var len = parseInt($("#"+parseInt(checked[0].id)+"_len").val()) / 1000;
+    var len = 0//parseInt($("#"+parseInt(checked[0].id)+"_len").val()) / 1000;
     var num = $("#"+parseInt(checked[0].id)+"_num").val();
     details += "["+parseInt(checked[0].id)+","+len+","+num+"]";
     for (var i = 1; i < checked.length; i++) {
-        len = parseInt($("#"+parseInt(checked[i].id)+"_len").val()) / 1000;
+        len = 0//parseInt($("#"+parseInt(checked[i].id)+"_len").val()) / 1000;
         num = $("#"+parseInt(checked[i].id)+"_num").val();
         details += ",["+parseInt(checked[i].id)+","+len+","+num+"]";
     }

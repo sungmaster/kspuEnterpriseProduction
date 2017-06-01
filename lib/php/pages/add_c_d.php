@@ -19,19 +19,22 @@ include_once("./lib/php/pages/menu.php");
         <input type="file" id="photo_file">
         <!--<input type="submit" id="mat_photo" class=" btn btn-light-b add_photo" value="Фото">-->
     </div>
-    <div class="container_sku">
+    <div class="container_sku" id="gContainer">
         <input id="gname" type="text" class="" placeholder="Название">
         <input id="garticul" type="text" class="" placeholder="Артикул">
         <br>
-        <div id="com_cat" class="categorys-list"><table id="mod_table"><tr><td class='center'>Деталь</td><td class='center'>К-во</td><td class='center'>Длина (мм)</td></tr>
+        <input class="fuzzy-search" placeholder="Search" type="text"/>
+        <div id="com_cat" class="categorys-list"><table id="mod_table"><tr><td class='center'>Деталь</td><td class='center'>К-во</td></tr>
+            <tbody class="list">
             <?php
             foreach ($output_data as $row) {
-                echo "<tr><td><input type='checkbox' id='".$row["dmid"]."_model'>
-                    <label for='".$row["dmid"]."_model'>".$row["dmname"]."</label></td>
-                    <td class='center'><input class='mod_num' type='number' min='1' value='1' id='".$row["dmid"]."_num'></td>
-                    <td class='center'><input type='number' min='1' value='100' class='len_text mod_num' id='".$row["dmid"]."_len'></td></tr>";
+                echo "<tr><td class='art' articul='".$row["dmarticul"]."'><input type='checkbox' id='".$row["dmid"]."_model'>
+                    <label for='".$row["dmid"]."_model' >".$row["dmarticul"]."</label></td>
+                    <td class='center'><input class='mod_num' type='number' min='1' value='1' id='".$row["dmid"]."_num'></td>";
+                    //<td class='center'><input type='number' min='1' value='100' class='len_text mod_num' id='".$row["dmid"]."_len'></td></tr>";
             }
             ?>
+            </tbody>
             </table>
         </div>
         <input id="details_count" type="hidden" class="" placeholder="Количество деталей">
@@ -47,6 +50,13 @@ include_once("./lib/php/pages/menu.php");
         <input id="s_d_submit" type="button" value="Отправить">
     </div>
 
+    <script src="js/list.min.js"></script>
     <script src="js/scripts.js"></script>
+    <script>
+        var list = new List('gContainer', { 
+            valueNames: [{ attr: 'articul', name: 'art' }],
+            listClass: 'list'
+        });
+    </script>
 </body>
 </html>

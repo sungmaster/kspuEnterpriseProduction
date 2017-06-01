@@ -117,22 +117,31 @@ class ProductModel
 	}
 	public function updateDetailModelList($data){
 		if ($data['dmid']==-1){
-			$this->db->query('INSERT INTO `detail_mod`(`time2m`, `btime`, `amortization2m`, `spending`, `dmarticul`, 
+			$this->db->query('INSERT INTO `detail_mod`(`time2m`, `btime`, `amortization2m`, `dlength`, `spending`, `dmarticul`, 
                 `dmname`, `dcatalog`, `base64img`) VALUES ('.floatval($data['time2m']).', '.floatval($data['btime']).', '.
-                floatval($data['amortization2m']).', '.floatval($data['spending']).', "'.
+                floatval($data['amortization2m']).', '.floatval($data['dlength']).', '.floatval($data['spending']).', "'.
                 $this->db->real_escape_string($data['dmarticul']).'", "'.$this->db->real_escape_string($data['dmname']).
                 '", '.intval($data['dcatalog']).', "' . $data["base64img"] . '")') or die($this->db->error);
 			return $this->db->insert_id;
 		}
 		else{
 			$this->db->query('UPDATE `detail_mod` SET `time2m`='.floatval($data['time2m']).',`btime`='.floatval($data['btime']).
-                ',`amortization2m`='.floatval($data['amortization2m']).',`spending`='.floatval($data['spending']).
-                ',`dmarticul`="'.$this->db->real_escape_string($data['dmarticul']).'",`dmname`="'.
+                ',`amortization2m`='.floatval($data['amortization2m']).', `dlength`='.floatval($data['dlength']).',`spending`='.
+                floatval($data['spending']).',`dmarticul`="'.$this->db->real_escape_string($data['dmarticul']).'",`dmname`="'.
                 $this->db->real_escape_string($data['dmname']).'",`dcatalog`='.intval($data['dcatalog']).', base64img = "'
                 . $data["base64img"] . '" WHERE `dmid` ='.intval($data['dmid']) ) or die($this->db->error);
 
 			return 0;
 		}
+	}
+	public function copyDetailModel($dmid){
+		$result = $this->db->query('select * from detail_mod WHERE dmid='.intval($dmid));
+		if (mysqli_num_rows($result) > 0){
+			$r = $result->fetch_assoc();
+			$this->db->query('INSERT INTO `detail_mod`(`time2m`, `btime`, `amortization2m`, `dlength`, `spending`, `dmarticul`, `dmname`, `dcatalog`, `base64img`) VALUES ('.$r['time2m'].','.$r['btime'].','.$r['amortization2m'].','.$r['dlength'].','.$r['spending'].',"'.$this->db->real_escape_string($r['dmarticul']).'","'.$this->db->real_escape_string($r['dmname']).'",[value-9], "'.$this->db->real_escape_string($r['base64img']).'")');
+			return $this->db->insert_id;
+		}
+		return -1;
 	}
 	public function updateProductCategoryList($data){
 		if ($data['gcid']==-1){
@@ -236,7 +245,7 @@ class ProductModel
 
 	//details
 	public function getAllDetail($assoc = false){
-		$result = $this->db->query('select detail.*, mname, dmname from detail 
+		$result = $this->db->query('select detail.*, mname, dmname, dmarticul from detail 
             INNER JOIN material ON material.mid = detail.material INNER JOIN detail_mod ON dmid = dmodel') or die($this->db->error);
 
 		$gres = array();
@@ -250,7 +259,7 @@ class ProductModel
 		return $gres;
 	}
 	public function getDetailList($model, $assoc = false){
-		$result = $this->db->query('select material.mname, detail.dlength, detail.count from detail, material 
+		$result = $this->db->query('select material.mname, detail.count from detail, material 
                       WHERE detail.material = material.mid and dmodel = '.intval($model)) or die($this->db->error);
 
 		$gres = array();
@@ -269,12 +278,11 @@ class ProductModel
 	}
 	public function updateDetail($data){
 		$count = intval($data['count']);
-		$result = $this->db->query('SELECT * FROM `detail` WHERE dmodel = '.intval($data['dmodel']).' AND material = '.intval($data['material']).' AND dlength = '.floatval($data['dlength']));
+		$result = $this->db->query('SELECT * FROM `detail` WHERE dmodel = '.intval($data['dmodel']).' AND material = '.intval($data['material']));
 		if (mysqli_num_rows($result) == 0){
 			if ($count<0){$count = 0;}
-			$this->db->query('INSERT INTO `detail`(`dlength`, `material`, `darticul`, `dmodel`, `count`) VALUES ('.
-                floatval($data['dlength']).','.intval($data['material']).',"'.
-                $this->db->real_escape_string($data['darticul']).'",'.intval($data['dmodel']).','.
+			$this->db->query('INSERT INTO `detail`(`material`, `darticul`, `dmodel`, `count`) VALUES ('.
+                intval($data['material']).',"'.$this->db->real_escape_string($data['darticul']).'",'.intval($data['dmodel']).','.
                 intval($count).')') or die($this->db->error);
 			return $this->db->insert_id;
 		}
@@ -282,7 +290,7 @@ class ProductModel
 			$res = $result->fetch_assoc();
 			$count += $res['count'];
 			if ($count<0){$count = 0;}
-			$this->db->query( 'UPDATE `detail` SET `count`='.intval($count).' WHERE dmodel = '.intval($data['dmodel']).' AND material = '.intval($data['material']).' AND dlength = '.floatval($data['dlength']) ) or die($this->db->error);
+			$this->db->query( 'UPDATE `detail` SET `count`='.intval($count).' WHERE dmodel = '.intval($data['dmodel']).' AND material = '.intval($data['material']) ) or die($this->db->error);
 			
 			return 0;
 		}
@@ -399,14 +407,14 @@ class ProductModel
 
 		foreach ($details as $value) {
 			$dModel = $value[0];
-			$dLenght = $value[1];
+			$dLenght = $modelList[$dModel]['dlength'];//$value[1];
 			$dCount = $value[2] * $count;
 			$readyCount = 0;
 
 			$rtime = $modelList[$dModel]['btime'] + ($modelList[$dModel]['time2m'] + $misc['coloringDuration'])*$dLenght;
 			foreach ($dList as $key => $det) {
 			    /*print_r($det);*/
-				if ($det['dmodel'] == $mid && $det['dlength'] == $dLenght){
+				if ($det['dmodel'] == $mid){//} && $det['dlength'] == $dLenght){
 					$readyCount = $det['count'];
 					break;
 				}

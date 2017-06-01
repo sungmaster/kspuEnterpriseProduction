@@ -25,6 +25,7 @@ include_once("./lib/php/pages/menu.php");
         <input id="time2m" type="text" placeholder="Время работы на 1м">
         <input id="btime" type="text" placeholder="Дополнительные затраты времени">
         <input id="amortization2m" type="text" placeholder="Затраты на 1м">
+        <input id="dlength" type="text" placeholder="Длина">
         <input id="spending" type="text" placeholder="Дополнительные затраты">
         <!--<input id="det_length" type="text" placeholder="Длина прута">-->
         <input id="base64img" type="hidden">
