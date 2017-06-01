@@ -15,29 +15,25 @@
 <?php
 include_once("./lib/php/pages/menu.php");
 ?>
-<style>
-    .menu_main{
-        margin-top: -20px;
-    }
-</style>
-        <div class="container pt-100">
-            <div class="row">
-                <!--<div class="header-search">
-                    <form action="#">
-                        <input type="text" placeholder="Поиск" />
-                        <input type="submit" class="search-submit" value="">
-                    </form>
-                </div>-->
-                <!--<div class="header-button">
-                    <a href="add_material.php"><input type="submit" class=" btn btn-light-b" value="Добавить деталь"></a>
-                </div>-->
-            </div>
-            <div class="row">
-                <div class="list-product">
-                    <?php
-                    $html = "";
-                    foreach ($output_data as $row) {
-                        $html .= "
+
+<div class="container pt-100">
+    <div class="row">
+        <!--<div class="header-search">
+            <form action="#">
+                <input type="text" placeholder="Поиск" />
+                <input type="submit" class="search-submit" value="">
+            </form>
+        </div>-->
+        <!--<div class="header-button">
+            <a href="add_material.php"><input type="submit" class=" btn btn-light-b" value="Добавить деталь"></a>
+        </div>-->
+    </div>
+    <div class="row">
+        <div class="list-product">
+            <?php
+            $html = "";
+            foreach ($output_data as $row) {
+                $html .= "
                                 <div class=\"product-item\">
                                   <img src=\"" . $row["base64img"] . "\" alt=\"\">
                                   <div class=\"product-item-content\">
@@ -46,15 +42,14 @@ include_once("./lib/php/pages/menu.php");
                                      <div class=\"price\">" . $row["price"] . " грн.</div>
                                    </div>
                                 </div>";
-                    }
-                    echo $html;
+            }
+            echo $html;
 
-                    ?>
+            ?>
 
-                </div>
-            </div>
         </div>
-
+    </div>
+</div>
 
 
 </body>

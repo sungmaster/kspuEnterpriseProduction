@@ -57,6 +57,13 @@ include_once("./lib/php/pages/menu.php");
             if (c > 0 && d != 0){
                 var oReq = new XMLHttpRequest();
                 oReq.onload = function(){
+                    if (d > 0)
+                        alert("Деталь \""+$("#smodel > option[value='"+a+"']").html()+"\" ("+
+                            $("#smaterial > option[value='"+b+"']").html()+" - "+c+" м. - "+Math.abs(d)+" шт.) добавлена на склад");
+                    else {
+                        alert("Деталь \""+$("#smodel > option[value='"+a+"']").html()+"\" ("+
+                        $("#smaterial > option[value='"+b+"']").html()+" - "+c+" м. - "+Math.abs(d)+" шт.) списана со склада");
+                    }
                     location.reload();
                 };
                 oReq.open("get", "./lib/php/pages/xmlhttp.php?q=updatedetail&dlength="+c+"&material="+b+"&dmodel="+a+"&count="+d, true);
